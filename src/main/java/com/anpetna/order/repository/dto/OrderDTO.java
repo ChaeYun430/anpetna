@@ -1,15 +1,25 @@
 package com.anpetna.order.repository.dto;
 
 import com.anpetna.item.domain.ItemEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderDTO {
 
     private Long orderId;   // 주문 코드
 
-    private int price;  // 주문 가격
+    private Long itemId;    // ItemEntity PK
+
+    private int price;  // 단가
 
     private int quantity;   // 주문 수량
 
-    private Long ordersId;  // 주문 묶음 ID
+    private int lineAmount; // 단가 * 수량
 
 }
