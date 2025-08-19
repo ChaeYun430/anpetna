@@ -2,7 +2,7 @@ package com.anpetna.item.repository;
 
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.domain.QItemEntity;
-import com.anpetna.item.repository.dto.searchItem.SearchAllReq;
+import com.anpetna.item.dto.SearchAllReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;

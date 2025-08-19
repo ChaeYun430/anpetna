@@ -1,7 +1,6 @@
-package com.anpetna.item.dto.deleteItem;
+package com.anpetna.item.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class DeleteItemReq {

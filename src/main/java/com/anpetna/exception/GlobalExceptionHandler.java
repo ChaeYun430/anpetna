@@ -1,7 +1,7 @@
 package com.anpetna.exception;
 
-import com.anpetna.ApiError;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ApiError handleAllExceptions(Exception e) {
-        var status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+    public ResponseEntity handleAllExceptions(Exception e) {
+        var status = HttpStatus.INTERNAL_SERVER_ERROR;
         var message = e.getMessage();
 
-        return new ApiError(status, message);
+        return new ResponseEntity(status);
     }
 }

@@ -1,7 +1,7 @@
 package com.anpetna.item.repository;
 
 import com.anpetna.item.domain.ItemEntity;
-import com.anpetna.item.repository.dto.searchItem.SearchAllReq;
+import com.anpetna.item.dto.SearchAllReq;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

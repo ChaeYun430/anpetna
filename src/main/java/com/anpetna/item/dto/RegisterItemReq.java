@@ -11,11 +11,11 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Builder
-public class ItemDTO {
+@Getter
+public class RegisterItemReq {
 
-    private Long itemId; // 상품코드
+    //  8개
 
     private String itemName; // 상품명
 
@@ -31,7 +31,8 @@ public class ItemDTO {
 
     private ItemCategory itemCategory; // 상품 카테고리
 
-    private List<ImageEntity> itemImages = new ArrayList<>();
+    private List<ImageDTO> itemImages = new ArrayList<>();
 
+    //썸네일 어케하지
 
 }

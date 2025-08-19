@@ -1,4 +1,4 @@
-package com.anpetna.item.dto.searchItem;
+package com.anpetna.item.dto;
 
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;

@@ -5,10 +5,11 @@ import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import com.anpetna.item.domain.ItemEntity;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@EnableJpaAuditing
 @SpringBootTest
-@ActiveProfiles("test")
+// @Transactional
 public class ItemRepositoryTests {
 
     //  테스트 전 환경/상태를 준비
@@ -33,7 +35,6 @@ public class ItemRepositoryTests {
 
         //  Given
         ItemEntity item = ItemEntity.builder()
-                .itemId(1L)
                 .itemName("상품명")
                 .itemPrice(100)
                 .itemStock(200)
@@ -42,9 +43,8 @@ public class ItemRepositoryTests {
                 .itemSellStatus(ItemSellStatus.SELL)
                 .itemSaleStatus(ItemSaleStatus.ONSALE)
                 .build();
-
-        ImageEntity.forItem("fileName1", "url1", item, 1).attachToItem(item);
-        ImageEntity.forItem("fileName2", "url2", item, 2).attachToItem(item);
+        ImageEntity.forItem("fileName1", "url1", item, 1);
+        ImageEntity.forItem("fileName2", "url2", item, 2);
 
 
         //  서비스의 메서드 단위로 트랜젝션 처리
@@ -62,5 +62,4 @@ public class ItemRepositoryTests {
         assertThat(itemEntities).isNotEmpty();
 
     }
-
 }

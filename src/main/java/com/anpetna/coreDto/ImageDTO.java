@@ -1,5 +1,14 @@
 package com.anpetna.coreDto;
 
-public class ImageDTO {
+import jakarta.persistence.Column;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
+public class ImageDTO {
+    private Long uuid;
+    private String fileName;
+    private String url;
+    private Integer sortOrder;
 }

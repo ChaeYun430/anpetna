@@ -1,13 +1,10 @@
 package com.anpetna.item.controller;
 
 
-import com.anpetna.item.repository.dto.ItemDTO;
-import com.anpetna.item.repository.dto.deleteItem.DeleteItemReq;
-import com.anpetna.item.repository.dto.deleteItem.DeleteItemRes;
-import com.anpetna.item.repository.dto.modifyItem.ModifyItemReq;
-import com.anpetna.item.repository.dto.modifyItem.ModifyItemRes;
-import com.anpetna.item.repository.dto.registerItem.RegisterItemReq;
-import com.anpetna.item.repository.dto.registerItem.RegisterItemRes;
+import com.anpetna.item.dto.ItemDTO;
+import com.anpetna.item.dto.DeleteItemReq;
+import com.anpetna.item.dto.ModifyItemReq;
+import com.anpetna.item.dto.RegisterItemReq;
 import com.anpetna.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +24,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<RegisterItemRes> registerItem(@RequestBody RegisterItemReq registerItemReq) {
+    public ResponseEntity<ItemDTO> registerItem(@RequestBody RegisterItemReq registerItemReq) {
 
         var postResult = itemService.registerItem(registerItemReq);
 
@@ -35,7 +32,7 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity<ModifyItemRes> updateItem(@RequestBody ModifyItemReq modifyItemReq) {
+    public ResponseEntity<ItemDTO> updateItem(@RequestBody ModifyItemReq modifyItemReq) {
 
         var putResult = itemService.modifyItem(modifyItemReq);
 
@@ -43,7 +40,7 @@ public class ItemController {
     }
 
     @DeleteMapping
-    public ResponseEntity<DeleteItemRes> deleteItem(@RequestBody DeleteItemReq deleteItemReq) {
+    public ResponseEntity<ItemDTO> deleteItem(@RequestBody DeleteItemReq deleteItemReq) {
 
         var deleteResult = itemService.deleteItem(deleteItemReq);
 

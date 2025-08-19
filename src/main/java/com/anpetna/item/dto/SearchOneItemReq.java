@@ -1,4 +1,4 @@
-package com.anpetna.item.dto.searchOneItem;
+package com.anpetna.item.dto;
 
 public class SearchOneItemReq {
 
