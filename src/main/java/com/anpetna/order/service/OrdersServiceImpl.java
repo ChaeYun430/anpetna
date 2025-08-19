@@ -4,11 +4,14 @@ import com.anpetna.order.domain.OrderEntity;
 import com.anpetna.order.domain.OrdersEntity;
 import com.anpetna.order.repository.OrderRepository;
 import com.anpetna.order.repository.OrdersRepository;
-import com.anpetna.order.repository.dto.OrdersDTO;
+import com.anpetna.order.dto.OrdersDTO;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrdersServiceImpl implements OrdersService {
 
     private final OrdersRepository ordersRepository;

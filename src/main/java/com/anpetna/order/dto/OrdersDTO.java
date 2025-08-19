@@ -1,4 +1,4 @@
-package com.anpetna.order.repository.dto;
+package com.anpetna.order.dto;
 
 import com.anpetna.order.domain.OrderEntity;
 import lombok.AllArgsConstructor;
