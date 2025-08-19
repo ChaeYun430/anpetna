@@ -2,14 +2,16 @@ package com.anpetna.order.repository;
 
 import com.anpetna.order.domain.OrderEntity;
 import com.anpetna.order.domain.OrdersEntity;
-import com.anpetna.order.repository.dto.OrdersDTO;
+import com.anpetna.order.dto.OrdersDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
 
     /** 주문 헤더 + 품목 + 아이템까지 한번에 로딩 (쿼리문 X, fetch 전략만 지정) */
