@@ -12,7 +12,4 @@ public class OrderDTO {
 
     private Long ordersId;  // 주문 묶음 ID
 
-
-
-
 }
