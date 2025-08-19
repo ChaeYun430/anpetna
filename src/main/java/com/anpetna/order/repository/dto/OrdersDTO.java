@@ -1,5 +1,14 @@
 package com.anpetna.order.repository.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrdersDTO {
 
     private Long ordersId;
@@ -8,8 +17,8 @@ public class OrdersDTO {
 
     private String cardId;
 
-    private int totalAmount;
+    private int totalPrice; // 총액
 
-    private int itemCount;
+    private int itemQuantity;   // 총 수량
 
 }
