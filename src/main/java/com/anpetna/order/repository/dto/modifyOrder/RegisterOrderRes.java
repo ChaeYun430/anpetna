@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RegisterOrderRes {
 
-    private Long itemId;
+    private Long itemId;    // 상품Id
 
-    private int price;
+    private int price;  // 가격
 
-    private int quantity;
+    private int quantity;   // 수량
 
 }

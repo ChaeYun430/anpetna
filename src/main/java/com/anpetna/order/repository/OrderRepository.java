@@ -1,0 +1,13 @@
+package com.anpetna.order.repository;
+
+import com.anpetna.order.domain.OrderEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+
+    List<OrderEntity> findByOrders_OrdersId(Long ordersId);
+
+    void deleteByOrders_OrdersId(Long ordersId);
+}
