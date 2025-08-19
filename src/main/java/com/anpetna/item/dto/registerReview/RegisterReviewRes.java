@@ -1,17 +1,12 @@
-package com.anpetna.item.dto;
+package com.anpetna.item.dto.registerReview;
 
-import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.coreDto.ImageDTO;
-import com.anpetna.item.domain.ItemEntity;
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewDTO {
-
-    private Long reviewId;
+public class RegisterReviewRes {
 
     private String content;
 
@@ -19,7 +14,7 @@ public class ReviewDTO {
 
     private LocalDateTime regDate;
 
-    private ItemDTO itemId;
+    private String itemId;
 
     private List<ImageDTO> images = new ArrayList<>();
 

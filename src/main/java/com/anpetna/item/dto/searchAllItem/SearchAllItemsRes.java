@@ -1,4 +1,4 @@
-package com.anpetna.item.dto;
+package com.anpetna.item.dto.searchAllItem;
 
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import org.hibernate.query.SortDirection;
 
 @Getter
-public class SearchAllReq {
+public class SearchAllItemsRes {
 
     private ItemSellStatus itemSellStatus; // 상품 판매상태
 

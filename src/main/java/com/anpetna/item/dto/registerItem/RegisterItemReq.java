@@ -1,6 +1,5 @@
-package com.anpetna.item.dto;
+package com.anpetna.item.dto.registerItem;
 
-import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;

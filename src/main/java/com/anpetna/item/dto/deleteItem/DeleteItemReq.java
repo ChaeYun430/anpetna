@@ -1,4 +1,4 @@
-package com.anpetna.item.dto;
+package com.anpetna.item.dto.deleteItem;
 
 import lombok.Getter;
 

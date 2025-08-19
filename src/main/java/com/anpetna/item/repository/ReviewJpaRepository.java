@@ -1,4 +1,4 @@
 package com.anpetna.item.repository;
 
-public interface ReviewJPARepository {
+public interface ReviewJpaRepository {
 }

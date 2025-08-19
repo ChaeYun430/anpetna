@@ -1,69 +1,62 @@
 package com.anpetna.item.service;
 
 import com.anpetna.item.domain.ItemEntity;
-import com.anpetna.item.dto.ItemDTO;
-import com.anpetna.item.dto.DeleteItemReq;
-import com.anpetna.item.dto.ModifyItemReq;
-import com.anpetna.item.dto.RegisterItemReq;
+import com.anpetna.item.dto.deleteItem.DeleteItemReq;
+import com.anpetna.item.dto.deleteItem.DeleteItemRes;
+import com.anpetna.item.dto.modifyItem.ModifyItemReq;
+import com.anpetna.item.dto.modifyItem.ModifyItemRes;
+import com.anpetna.item.dto.registerItem.RegisterItemReq;
+import com.anpetna.item.dto.registerItem.ReigisterItemRes;
+import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
+import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
+import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.repository.ItemJpaRepository;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@AllArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemJpaRepository itemJPARepository;
+    private ModelMapper modelMapper;
 
-    ModelMapper modelMapper = new ModelMapper();
-
-    //  이게 과연 좋은 코드일까
     @Override
-    public ItemDTO registerItem(RegisterItemReq registerItemReq) {
-        RegisterItemReq req = registerItemReq;
-       modelMapper.typeMap(RegisterItemReq.class, ItemEntity.class)
-                .addMappings(mapper -> mapper.skip(ItemEntity::setItemId))
+    public List<SearchAllItemsReq> getAllItems(SearchAllItemsReq req) {
+        return List.of();
+    }
 
-                ;
-/*                .validate(); // errors.throwValidationExceptionIfErrorsExist();
-        //  예외처리를 잘한다란??*/
-        //  Converter의 적재적소 활용봅은??
+    @Override
+    public SearchOneItemRes getOneItem(SearchOneItemReq req) {
+        return null;
+    }
 
+    @Override
+    public ReigisterItemRes registerItem(RegisterItemReq registerItemReq) {
+        ItemEntity item = modelMapper.map(registerItemReq, ItemEntity.class);
         ItemEntity savedItem = itemJPARepository.save(item);
-        return modelMapper.map(savedItem, ItemDTO.class);
-    }
-
-
-    @Override
-    public ItemDTO modifyItem(ModifyItemReq modifyItemReq) {
-
-        return null;
+        return modelMapper.map(savedItem, ReigisterItemRes.class);
     }
 
     @Override
-    public ItemDTO deleteItem(DeleteItemReq deleteItemReq) {
-
-        itemJPARepository.deleteById(deleteItemReq.getItemId());
-
-        return null;
+    public ModifyItemRes modifyItem(ModifyItemReq modifyItemReq) {
+        ItemEntity item = modelMapper.map(modifyItemReq, ItemEntity.class);
+        Optional foundItem = itemJPARepository.findById(modifyItemReq.getItemId());
+        ItemEntity savedItem = itemJPARepository.save(item);
+        return modelMapper.map(savedItem, ModifyItemRes.class);
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
-
-
-        return null;
+    public DeleteItemRes deleteItem(DeleteItemReq deleteItemReq) {
+        ItemEntity item = modelMapper.map(deleteItemReq, ItemEntity.class);
+        itemJPARepository.delete(item);
+        return new DeleteItemRes();
     }
 
-    @Override
-    public ItemDTO getOneItem(Long itemId) {
 
-        return null;
-    }
 
 }

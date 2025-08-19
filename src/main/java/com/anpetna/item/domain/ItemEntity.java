@@ -55,6 +55,9 @@ public class ItemEntity extends BaseEntity {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();
 
+    //  0번 : 썸네일
+    //  1~3번 : 상품이미지 (1번은 대표 이미지)
+    //  4번~ : 상품 상세 설명
 
     public void addImage(ImageEntity image) {
         images.add(image);

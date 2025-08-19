@@ -8,13 +8,11 @@ import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("test")
-public class ItemServiceTests {
+public class ReviewServiceTests {
 
     @Autowired
     ItemService itemService;
@@ -42,5 +40,11 @@ public class ItemServiceTests {
                 .itemImages(List.of(image1, image2))
                 .build();
         itemService.registerItem(req);
+
+
+
+
     }
+
+
 }

@@ -2,7 +2,7 @@ package com.anpetna.item.repository;
 
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.domain.QItemEntity;
-import com.anpetna.item.dto.SearchAllReq;
+import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public List<ItemEntity> sortByCategory(SearchAllReq searchAllReq) {
+    public List<ItemEntity> sortByCategory(SearchAllItemsReq searchAllReq) {
 
         return queryFactory.selectFrom(qItem)
                 .where(qItem.itemCategory.eq(searchAllReq.getItemCategory()))
@@ -34,7 +34,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public List<ItemEntity> orderByPrice(SearchAllReq searchAllReq) {
+    public List<ItemEntity> orderByPrice(SearchAllItemsReq searchAllReq) {
         searchAllReq.getDirection();
         return queryFactory.selectFrom(qItem)
                 .orderBy(qItem.itemPrice.asc())
@@ -42,7 +42,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public List<ItemEntity> orderBySales(SearchAllReq searchAllDTO) {
+    public List<ItemEntity> orderBySales(SearchAllItemsReq searchAllDTO) {
         return List.of();
     }
 
