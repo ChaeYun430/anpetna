@@ -7,12 +7,14 @@ import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Builder
+@ToString
 public class ItemDTO {
 
     private Long itemId; // 상품코드

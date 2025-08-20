@@ -3,6 +3,7 @@ package com.anpetna.item.config;
 import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.domain.ItemEntity;
+import com.anpetna.item.dto.BaseReq;
 import com.anpetna.item.dto.ItemDTO;
 import com.anpetna.item.dto.modifyItem.ModifyItemReq;
 import com.anpetna.item.dto.modifyItem.ModifyItemRes;
@@ -31,27 +32,17 @@ public class ItemMapper {
 
    public TypeMap<RegisterItemReq, ItemEntity> cItemMapReq() {
        TypeMap<RegisterItemReq, ItemEntity> typeMap = modelMapper.createTypeMap(RegisterItemReq.class, ItemEntity.class);
-
        typeMap.addMappings(mapper -> mapper.skip(ItemEntity::setItemId));
-       typeMap.setPostConverter(ctx-> {
-           RegisterItemReq src = ctx.getSource();
-           ItemEntity des = ctx.getDestination();
-
-           des.getImages().clear();
-
-           if (src.getImages() != null) {
-               src.getImages().forEach(img -> des.addImage(modelMapper.map(img, ImageEntity.class)));
-           }
-           return des;
-       });
-       return typeMap;
+       return imageToEntity(typeMap);
    }
 
    public TypeMap<ItemEntity, RegisterItemRes> cItemMapRes() {
         TypeMap<ItemEntity, RegisterItemRes> typeMap = modelMapper.createTypeMap(ItemEntity.class, RegisterItemRes.class);
         typeMap.addMappings(mapper -> {mapper.skip(RegisterItemRes::setRes);});
-        return typeMap;
+        return imageToDTO(typeMap);
     }
+
+
 
     public TypeMap<ItemEntity, SearchOneItemRes> r1ItemMapRes() {
         TypeMap<ItemEntity, SearchOneItemRes> typeMap = modelMapper.createTypeMap(ItemEntity.class, SearchOneItemRes.class);
@@ -71,7 +62,40 @@ public class ItemMapper {
             }
             return des;
         });
+        return typeMap;
+    }
 
+    public <S extends BaseReq>TypeMap imageToEntity(TypeMap<S, ItemEntity> typeMap) {
+        typeMap.setPostConverter(ctx-> {
+            var src = ctx.getSource();
+            var des = ctx.getDestination();
+
+            des.getImages().clear();
+
+            try{
+                src.getImages().forEach(imgDTO -> des.addImage(modelMapper.map(imgDTO, ImageEntity.class)));
+            } catch (NullPointerException e) {
+                System.out.println("이미지를 입력하지 않음");
+            }
+            return des;
+        });
+        return typeMap;
+    }
+
+    public <S extends BaseReq>TypeMap imageToDTO(TypeMap<ItemEntity, S> typeMap) {
+        typeMap.setPostConverter(ctx-> {
+            var src = ctx.getSource();
+            var des = ctx.getDestination();
+
+            des.getImages().clear();
+
+            try{
+                src.getImages().forEach(imgEntity -> des.addImage(modelMapper.map(imgEntity, ImageDTO.class)));
+            } catch (NullPointerException e) {
+                System.out.println("이미지를 입력하지 않음");
+            }
+            return des;
+        });
         return typeMap;
     }
 }

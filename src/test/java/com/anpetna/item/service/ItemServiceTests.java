@@ -4,11 +4,18 @@ import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
+import com.anpetna.item.dto.ItemDTO;
+import com.anpetna.item.dto.deleteItem.DeleteItemReq;
+import com.anpetna.item.dto.deleteItem.DeleteItemRes;
+import com.anpetna.item.dto.modifyItem.ModifyItemReq;
+import com.anpetna.item.dto.modifyItem.ModifyItemRes;
 import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemRes;
+import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import jakarta.transaction.Transactional;
+import org.hibernate.query.SortDirection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +43,7 @@ public class ItemServiceTests {
                 .url("https://www.baidu.com")
                 .sortOrder(1)
                 .build();
-        RegisterItemReq req = RegisterItemReq.builder() //id는 자동생성 그렇다면 dto처리는??
+        RegisterItemReq req = RegisterItemReq.builder()
                 .itemName("test")
                 .itemPrice(100)
                 .itemStock(200)
@@ -44,24 +51,79 @@ public class ItemServiceTests {
                 .itemCategory(ItemCategory.TOY)
                 .itemSellStatus(ItemSellStatus.SELL)
                 .itemSaleStatus(ItemSaleStatus.ONSALE)
-                .images(List.of(image1, image2))
                 .build();
-
+        req.addImage(image1);
+        req.addImage(image2);
         RegisterItemRes res = itemService.registerItem(req);
 
         System.out.println(res);
-    }// image itemId 필요
+    }
 
     @Test
     @Transactional
-    public void searchItem() {
+    public void searchOneItem() {
         SearchOneItemReq req = new SearchOneItemReq();
-        req.setItemId(652L);
+        req.setItemId(1L);
         SearchOneItemRes res = itemService.getOneItem(req);
         System.out.println(res);
     }
 
+    @Test
+    public void searchAllItem() {
+        SearchAllItemsReq req = new SearchAllItemsReq();
+        req.setSortBySale(ItemSellStatus.SOLD_OUT);
+        List<ItemDTO> res = itemService.getAllItems(req);
+        System.out.println(res);
+        res.clear();
+        req.setSortByCategory(ItemCategory.BATH_PRODUCT);
+        res = itemService.getAllItems(req);
+        System.out.println(res);
+        res.clear();
+        req.setSortByPrice(10000);
+        res = itemService.getAllItems(req);
+        System.out.println(res);
+        res.clear();
+        req.setDirection(SortDirection.ASCENDING);
+        res = itemService.getAllItems(req);
+        System.out.println(res);
+    }
 
+    @Test
+    @Transactional
+    public void modifyItem(){
+        SearchOneItemReq req = new SearchOneItemReq();
+        req.setItemId(2L);
+        SearchOneItemRes res = itemService.getOneItem(req);
+        System.out.println(res);
 
+        ImageDTO image1 = ImageDTO.builder()
+                .fileName("이미지파일1111")
+                .url("https://www.baidu.com11111111")
+                .sortOrder(1)
+                .build();
+        ImageDTO image2 = ImageDTO.builder()
+                .fileName("이미지파일2111111111")
+                .url("https://www.baidu.com111111111")
+                .sortOrder(1)
+                .build();
+        ModifyItemReq req1 = ModifyItemReq.builder()
+               .itemStock(100)
+                .itemDetail("111111111111111111")
+                .itemSellStatus(ItemSellStatus.SOLD_OUT)
+                .itemSaleStatus(ItemSaleStatus.ORIGIN)
+                .images(List.of(image1, image2))
+                .build();
+        ModifyItemRes res1 = itemService.modifyItem(req1);
 
+        System.out.println(res1);
+
+    }
+
+    @Test
+    public void deleteItem(){
+        DeleteItemReq req = new DeleteItemReq();
+        req.setItemId(1L);
+        DeleteItemRes res = itemService.deleteItem(req);
+        System.out.println(res);
+    }
 }

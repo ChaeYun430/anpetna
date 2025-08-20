@@ -1,6 +1,7 @@
 package com.anpetna.item.dto.modifyItem;
 
 import com.anpetna.coreDomain.ImageEntity;
+import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import lombok.Builder;
@@ -22,6 +23,6 @@ public class ModifyItemReq {
 
     private ItemSaleStatus itemSaleStatus; // 상품 세일상태
     @Builder.Default
-    private List<ImageEntity> images = new ArrayList<>();
+    private List<ImageDTO> images = new ArrayList<>();
 
 }

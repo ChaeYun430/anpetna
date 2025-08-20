@@ -4,6 +4,7 @@ import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
+import com.anpetna.item.dto.BaseReq;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
-public class RegisterItemRes {
+public class RegisterItemRes extends BaseReq {
 
     private Long itemId;
 

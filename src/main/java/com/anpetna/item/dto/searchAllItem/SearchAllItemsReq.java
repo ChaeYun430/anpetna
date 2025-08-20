@@ -1,11 +1,12 @@
 package com.anpetna.item.dto.searchAllItem;
 
 import com.anpetna.item.constant.ItemCategory;
-import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.query.SortDirection;
 
+@Setter
 @Getter
 public class SearchAllItemsReq {
 

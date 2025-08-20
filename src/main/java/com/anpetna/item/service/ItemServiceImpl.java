@@ -34,6 +34,37 @@ public class ItemServiceImpl implements ItemService {
     private ModelMapper modelMapper = new ModelMapper();
     private ItemMapper itemMapper = new ItemMapper();
 
+    @Override
+    public RegisterItemRes registerItem(RegisterItemReq req) {
+        ItemEntity item = itemMapper.cItemMapReq().map(req);
+        ItemEntity savedItem = repository.save(item);
+        savedItem.getImages().forEach(m->System.out.println(m.getItem()));
+        RegisterItemRes res = itemMapper.cItemMapRes().map(savedItem);
+        res.setRes("registered");
+        return res;
+    }
+
+    @Override
+    public ModifyItemRes modifyItem(ModifyItemReq req) {
+        ItemEntity found = repository.findById(req.getItemId()).orElse(null);
+        modelMapper.map(req, found);
+        ItemEntity saved = repository.save(found);
+        ModifyItemRes res = modelMapper.map(found, ModifyItemRes.class);
+        res.setRes("modified");
+        return res;
+    }
+
+    @Override
+    public DeleteItemRes deleteItem(DeleteItemReq req) {
+        repository.deleteById(req.getItemId());
+        DeleteItemRes res = DeleteItemRes.builder()
+                .itemId(req.getItemId())
+                .itemName(req.getItemName())
+                .res("deleted")
+                .build();
+        return res;
+    }
+
      @Override
     public List<ItemDTO> getAllItems(SearchAllItemsReq req) {
          List<ItemEntity> found = repository.findAll();
@@ -57,34 +88,4 @@ public class ItemServiceImpl implements ItemService {
        return itemMapper.r1ItemMapRes().map(res);
     }
 
-    @Override
-    public RegisterItemRes registerItem(RegisterItemReq req) {
-        ItemEntity item = itemMapper.cItemMapReq().map(req);
-        ItemEntity savedItem = repository.save(item);
-     //  savedItem.getImages().forEach(m->System.out.println(m.getItem()));
-        RegisterItemRes res = itemMapper.cItemMapRes().map(savedItem);
-        res.setRes("registered");
-        return res;
-    }// 이미지에 아이디가 안 들어간다.
-
-    @Override
-    public ModifyItemRes modifyItem(ModifyItemReq req) {
-        ItemEntity found = repository.findById(req.getItemId()).orElse(null);
-        modelMapper.map(req, found);
-        ItemEntity saved = repository.save(found);
-        ModifyItemRes res = modelMapper.map(found, ModifyItemRes.class);
-        res.setRes("modified");
-        return res;
-    }
-
-    @Override
-    public DeleteItemRes deleteItem(DeleteItemReq req) {
-        repository.deleteById(req.getItemId());
-        DeleteItemRes res = DeleteItemRes.builder()
-                .itemId(req.getItemId())
-                .itemName(req.getItemName())
-                .res("deleted")
-                .build();
-        return res;
-    }
 }
