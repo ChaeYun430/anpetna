@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "images")
+@ToString
 public class ItemEntity extends BaseEntity {
 
     @Id
