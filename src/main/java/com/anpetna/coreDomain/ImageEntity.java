@@ -81,7 +81,7 @@ public class ImageEntity {
     }
 
     // ====== JPA 생명주기에서 유효성 체크 (서비스 실수 방지) ======
-    @PrePersist
+/*    @PrePersist
     @PreUpdate
     public void validateExactlyOneParent() {
         int cnt = 0;
@@ -92,7 +92,7 @@ public class ImageEntity {
         if (cnt != 1) {
             throw new IllegalStateException("Image must be attached to exactly ONE parent (board|member|item|review).");
         }
-    }
+    }*/
 
     // 정적 팩토리
     public static ImageEntity forBoard(String fileName, String url, BoardEntity b, Integer order) {

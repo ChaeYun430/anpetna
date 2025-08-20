@@ -1,7 +1,8 @@
 package com.anpetna.item.dto.deleteItem;
 
-import java.time.LocalDateTime;
+import lombok.Builder;
 
+@Builder
 public class DeleteItemRes {
 
     //  UI(관리자 페이지)
@@ -10,6 +11,5 @@ public class DeleteItemRes {
     //  "무선 이어폰" 상품이 삭제되었습니다.
     private Long itemId;
     private String itemName;              // 삭제된 상품명 (선택)
-    private String itemStatus;            // "DELETED"
-    private LocalDateTime deletedAt;      // 삭제 시간
+    private String res;            // "DELETED"
 }

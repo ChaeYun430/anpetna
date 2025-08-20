@@ -22,6 +22,6 @@ public class ModifyItemReq {
 
     private ItemSaleStatus itemSaleStatus; // 상품 세일상태
     @Builder.Default
-    private List<ImageEntity> itemImages = new ArrayList<>();
+    private List<ImageEntity> images = new ArrayList<>();
 
 }

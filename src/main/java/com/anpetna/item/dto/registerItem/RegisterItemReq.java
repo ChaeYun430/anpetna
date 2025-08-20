@@ -4,6 +4,7 @@ import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
+import com.anpetna.item.domain.ItemEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,8 +32,11 @@ public class RegisterItemReq {
     private ItemCategory itemCategory; // 상품 카테고리
 
     @Builder.Default
-    private List<ImageDTO> itemImages = new ArrayList<>();
+    private List<ImageDTO> images = new ArrayList<>();
 
+    public void addImage(ImageDTO imageDTO) {
+        images.add(imageDTO);
+    }
     //썸네일 어케하지
 
 }

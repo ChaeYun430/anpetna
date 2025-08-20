@@ -6,5 +6,5 @@ import lombok.Getter;
 public class DeleteItemReq {
 
     private Long itemId;
-
+    private String itemName;
 }

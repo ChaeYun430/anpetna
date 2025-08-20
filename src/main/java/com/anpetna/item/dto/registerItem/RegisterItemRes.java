@@ -22,7 +22,7 @@ public class RegisterItemRes {
 
     private int itemPrice;
 
-    private String status;
+    private String res;
 
     //  UI(관리자페이지)
     //  "~~~" 상품이 등록되었습니다. → [상세 보기]...

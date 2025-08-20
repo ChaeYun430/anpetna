@@ -42,8 +42,9 @@ public class ItemServiceTests {
                 .itemCategory(ItemCategory.TOY)
                 .itemSellStatus(ItemSellStatus.SELL)
                 .itemSaleStatus(ItemSaleStatus.ONSALE)
-                .itemImages(List.of(image1, image2))
+                .images(List.of(image1, image2))
                 .build();
+
         RegisterItemRes res = itemService.registerItem(req);
 
         System.out.println(res);
