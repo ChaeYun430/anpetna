@@ -9,11 +9,11 @@ import org.hibernate.query.SortDirection;
 @Getter
 public class SearchAllItemsReq {
 
-    private ItemSellStatus itemSellStatus; // 상품 판매상태
+    private ItemSellStatus sortBySale; // 상품 판매상태
 
-    private ItemSaleStatus itemSaleStatus; // 상품 세일상태
+    private ItemCategory sortByCategory; // 상품 카테고리
 
-    private ItemCategory itemCategory; // 상품 카테고리
+    private Integer sortByPrice;
 
     private SortDirection direction; // ASC, DESC (Enum)
 

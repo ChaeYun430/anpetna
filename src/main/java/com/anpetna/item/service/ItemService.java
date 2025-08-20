@@ -1,5 +1,6 @@
 package com.anpetna.item.service;
 
+import com.anpetna.item.dto.ItemDTO;
 import com.anpetna.item.dto.deleteItem.DeleteItemReq;
 import com.anpetna.item.dto.deleteItem.DeleteItemRes;
 import com.anpetna.item.dto.modifyItem.ModifyItemReq;
@@ -14,7 +15,8 @@ import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import java.util.List;
 
 public interface ItemService {
-  /*  List<SearchAllItemsRes> getAllItems(SearchAllItemsReq req);*/
+
+    List<ItemDTO> getAllItems(SearchAllItemsReq req);
 
     SearchOneItemRes getOneItem(SearchOneItemReq req);
 

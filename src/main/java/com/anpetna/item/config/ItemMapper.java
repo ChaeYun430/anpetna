@@ -14,6 +14,8 @@ import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ItemMapper {
 
@@ -44,25 +46,5 @@ public class ItemMapper {
         return typeMap;
     }
 
-    public TypeMap<ModifyItemReq, ItemEntity> uItemMapReq() {
-        TypeMap<ModifyItemReq, ItemEntity> typeMap = modelMapper.createTypeMap(ModifyItemReq.class, ItemEntity.class);
-        typeMap.addMappings(mapper -> mapper.skip(ItemEntity::setItemId));
-        typeMap.setPostConverter(ctx-> {
-            ModifyItemReq req = ctx.getSource();
-            ItemEntity entity = ctx.getDestination();
-            entity.getImages().clear();
-            if (req.getImages() != null) {
-                req.getImages().forEach(img -> entity.getImages().add(modelMapper.map(img, ImageEntity.class)));
-            }
-            return entity;
-        });
-        return typeMap;
-    }
-
-    public TypeMap<ItemEntity, ModifyItemRes> uItemMapRes() {
-        TypeMap<ItemEntity, ModifyItemRes> typeMap = modelMapper.createTypeMap(ItemEntity.class, ModifyItemRes.class);
-
-        return typeMap;
-    }
 
 }

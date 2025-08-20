@@ -10,7 +10,6 @@ import com.anpetna.item.dto.modifyItem.ModifyItemRes;
 import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemRes;
 import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
-import com.anpetna.item.dto.searchAllItem.SearchAllItemsRes;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.repository.ItemJpaRepository;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -33,26 +33,19 @@ public class ItemServiceImpl implements ItemService {
      @Override
     public List<ItemDTO> getAllItems(SearchAllItemsReq req) {
          List<ItemEntity> found = repository.findAll();
-        if (req.getItemCategory() != null){
+        if (req.getSortByCategory() != null){
             found = repository.sortByCategory(req);
         }
-        if (req.getItemSaleStatus() != null){
+        if (req.getSortBySale() != null){
             found = repository.orderBySales(req);
         }
-
-
-                 switch (req.){
-                     case :
-                 }
-         List<ItemEntity> found = repository.sortByCategory(req);
-         List<ItemEntity> orderByPrice = repository.orderByPrice(req);
-         List<ItemEntity> orderBySales = repository.orderBySales(req);
-
-         List<ItemDTO> res = new ArrayList<>();
-         for (ItemEntity itemEntity : sortByCategory) {
-             res.add(modelMapper.map(sortByCategory, ItemDTO.class));
-         }
-        return
+        if (req.getSortByPrice() != null){
+            found  = repository.orderByPrice(req);
+        }
+         List<ItemDTO> res = found.stream()
+                 .map(entity -> modelMapper.map(entity, ItemDTO.class))
+                 .collect(Collectors.toList());
+        return res;
     }
 
     @Override

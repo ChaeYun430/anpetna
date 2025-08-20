@@ -10,8 +10,6 @@ import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemRes;
 
 import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
-import com.anpetna.item.dto.searchAllItem.SearchAllItemsRes;
-import com.anpetna.item.dto.searchAllReview.SearchAllReviewsRes;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.service.ItemService;
