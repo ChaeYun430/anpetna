@@ -170,12 +170,13 @@ public class OrdersServiceTest {
 
     @Test
     @DisplayName("getSummariesByMember: memberId로 페이지 조회")
-    @Commit
+    // @Commit
     void getSummariesByMember_ok() {
-        // given
-        var o1 = newOrders("user-c");
-        var o2 = newOrders("user-c");
-        var oX = newOrders("other"); // 다른 사용자
+        String member = "user-c-" + java.util.UUID.randomUUID(); // 고유 memberId
+
+        var o1 = newOrders(member);
+        var o2 = newOrders(member);
+        var oX = newOrders("other");
 
         var item = newItem("장난감D", 5000);
         addOrderItem(o1, item, 5000, 1);
@@ -190,7 +191,7 @@ public class OrdersServiceTest {
         log.info("============================================================");
 
         // when
-        var page = ordersService.getSummariesByMember("user-c", PageRequest.of(0, 10));
+        var page = ordersService.getSummariesByMember(member, PageRequest.of(0, 10));
 
         log.info("============================================================");
         log.info("getSummariesByMember_ok : " + page);
