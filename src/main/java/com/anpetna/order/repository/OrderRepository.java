@@ -11,5 +11,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
     List<OrderEntity> findByOrders_OrdersId(Long ordersId);
 
-    void deleteByOrders_OrdersId(Long ordersId);
+    // before: void
+    long deleteByOrders_OrdersId(Long ordersId);
 }

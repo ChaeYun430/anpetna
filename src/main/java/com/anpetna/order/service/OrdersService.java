@@ -1,7 +1,6 @@
 package com.anpetna.order.service;
 
 import com.anpetna.order.dto.OrdersDTO;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

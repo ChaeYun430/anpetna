@@ -55,6 +55,7 @@ public class ItemEntity extends BaseEntity {
     private String itemThumbsId;*/
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ImageEntity> images = new ArrayList<>();
 
 

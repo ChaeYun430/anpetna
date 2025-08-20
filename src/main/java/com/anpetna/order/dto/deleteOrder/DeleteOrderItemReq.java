@@ -1,21 +1,21 @@
 package com.anpetna.order.dto.deleteOrder;
 
-
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class RegisterOrderRes {
+public class DeleteOrderItemReq {
 
-    private Long itemId;    // 상품 Id
+    @NotNull
+    private Long ordersId;
 
-    private int price;      // 상품 가격
-
-    private int quantity;   // 상품 수량
+    @NotNull
+    private Long orderItemId;
 
 }
