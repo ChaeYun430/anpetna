@@ -30,6 +30,7 @@ public class RegisterItemReq {
 
     private ItemCategory itemCategory; // 상품 카테고리
 
+    @Builder.Default
     private List<ImageDTO> itemImages = new ArrayList<>();
 
     //썸네일 어케하지

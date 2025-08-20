@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public interface ItemRepositoryCustom {
 
-    List<ItemEntity> sortByCategory(SearchAllItemsReq searchAllDTO);
+    List<ItemEntity> sortByCategory(SearchAllItemsReq req);
 
-    List<ItemEntity> orderByPrice(SearchAllItemsReq searchAllDTO);
+    List<ItemEntity> orderByPrice(SearchAllItemsReq req);
 
-    List<ItemEntity> orderBySales(SearchAllItemsReq searchAllDTO);
+    List<ItemEntity> orderBySales(SearchAllItemsReq req);
 
 
 }

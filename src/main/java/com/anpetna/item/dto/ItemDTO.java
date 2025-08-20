@@ -30,7 +30,7 @@ public class ItemDTO {
     private ItemSaleStatus itemSaleStatus; // 상품 세일상태
 
     private ItemCategory itemCategory; // 상품 카테고리
-
+    @Builder.Default
     private List<ImageEntity> itemImages = new ArrayList<>();
 
 

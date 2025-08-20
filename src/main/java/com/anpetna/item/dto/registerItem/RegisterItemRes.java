@@ -4,11 +4,17 @@ import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReigisterItemRes {
+@ToString
+@Setter
+@Getter
+public class RegisterItemRes {
 
     private Long itemId;
 

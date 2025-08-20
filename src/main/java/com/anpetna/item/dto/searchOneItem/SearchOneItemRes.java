@@ -4,10 +4,11 @@ import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
+import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Builder
 public class SearchOneItemRes {
 
     private Long itemId; // 상품코드
@@ -25,7 +26,7 @@ public class SearchOneItemRes {
     private ItemSaleStatus itemSaleStatus; // 상품 세일상태
 
     private ItemCategory itemCategory; // 상품 카테고리
-
+    @Builder.Default
     private List<ImageEntity> itemImages = new ArrayList<>();
 
 }

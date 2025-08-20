@@ -5,22 +5,25 @@ import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import com.anpetna.item.dto.registerItem.RegisterItemReq;
+import com.anpetna.item.dto.registerItem.RegisterItemRes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@EnableJpaAuditing
 public class ItemServiceTests {
 
     @Autowired
     ItemService itemService;
 
     @Test
-    public void registerItemTest() {
+    public void registerItem() {
         ImageDTO image1 = ImageDTO.builder()
                 .fileName("이미지파일1")
                 .url("https://www.baidu.com")
@@ -41,6 +44,8 @@ public class ItemServiceTests {
                 .itemSaleStatus(ItemSaleStatus.ONSALE)
                 .itemImages(List.of(image1, image2))
                 .build();
-        itemService.registerItem(req);
+        RegisterItemRes res = itemService.registerItem(req);
+
+        System.out.println(res);
     }
 }

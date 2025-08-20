@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class ModifyReviewReq {
 
-    private Long itemId;
+    private Long reviewId;
 
     private int itemStock; // 재고수량
 
