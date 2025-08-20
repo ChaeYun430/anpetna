@@ -1,5 +1,6 @@
 package com.anpetna.item.service;
 
+import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.item.config.ItemMapper;
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.dto.ItemDTO;
@@ -13,6 +14,7 @@ import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.repository.ItemJpaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.anpetna.coreDomain.QImageEntity.imageEntity;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -35,11 +39,9 @@ public class ItemServiceImpl implements ItemService {
          List<ItemEntity> found = repository.findAll();
         if (req.getSortByCategory() != null){
             found = repository.sortByCategory(req);
-        }
-        if (req.getSortBySale() != null){
+        }else if (req.getSortBySale() != null){
             found = repository.orderBySales(req);
-        }
-        if (req.getSortByPrice() != null){
+        }else if (req.getSortByPrice() != null){
             found  = repository.orderByPrice(req);
         }
          List<ItemDTO> res = found.stream()
@@ -50,8 +52,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public SearchOneItemRes getOneItem(SearchOneItemReq req) {
-        Optional found = repository.findById(req.getItemId());
-        return modelMapper.map(found, SearchOneItemRes.class);
+        Optional<ItemEntity> found = repository.findById(req.getItemId());
+        ItemEntity res = found.orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + req.getItemId()));
+       return itemMapper.r1ItemMapRes().map(res);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
         RegisterItemRes res = itemMapper.cItemMapRes().map(savedItem);
         res.setRes("registered");
         return res;
-    }
+    }// 이미지에 아이디가 안 들어간다.
 
     @Override
     public ModifyItemRes modifyItem(ModifyItemReq req) {

@@ -52,9 +52,8 @@ public class ItemEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)  // DB에 enum의 이름(문자열)으로 저장 (숫자로 저장하는 ORDINAL보다 안전).
     private ItemCategory itemCategory; // 상품 카테고리
 
-    @Builder.Default
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ImageEntity> images = new ArrayList<>();
+    private List<ImageEntity> images;
 
     //  0번 : 썸네일
     //  1~3번 : 상품이미지 (1번은 대표 이미지)

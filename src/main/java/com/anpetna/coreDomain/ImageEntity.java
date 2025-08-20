@@ -15,7 +15,7 @@ import lombok.Setter;
 @Table(name = "anpetna_image")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class ImageEntity {
 
     @Id
@@ -42,7 +42,7 @@ public class ImageEntity {
     private MemberEntity member;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "item", foreignKey = @ForeignKey(name = "fk_image_item"))
+    @JoinColumn(name = "item_id", foreignKey = @ForeignKey(name = "fk_image_item"))
     private ItemEntity item;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

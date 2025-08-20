@@ -29,7 +29,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     public List<ItemEntity> sortByCategory(SearchAllItemsReq searchAllReq) {
 
         return queryFactory.selectFrom(qItem)
-                .where(qItem.itemCategory.eq(searchAllReq.getItemCategory()))
+                .where(qItem.itemCategory.eq(searchAllReq.getSortByCategory()))
                 .fetch();
     }
 
