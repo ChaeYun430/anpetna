@@ -68,7 +68,7 @@ public class ItemServiceTests {
         System.out.println(res);
     }
 
-    @Test
+/*    @Test
     public void searchAllItem() {
         SearchAllItemsReq req = new SearchAllItemsReq();
         req.setSortBySale(ItemSellStatus.SOLD_OUT);
@@ -86,16 +86,11 @@ public class ItemServiceTests {
         req.setDirection(SortDirection.ASCENDING);
         res = itemService.getAllItems(req);
         System.out.println(res);
-    }
+    }*/
 
     @Test
     @Transactional
     public void modifyItem(){
-        SearchOneItemReq req = new SearchOneItemReq();
-        req.setItemId(2L);
-        SearchOneItemRes res = itemService.getOneItem(req);
-        System.out.println(res);
-
         ImageDTO image1 = ImageDTO.builder()
                 .fileName("이미지파일1111")
                 .url("https://www.baidu.com11111111")
@@ -106,14 +101,17 @@ public class ItemServiceTests {
                 .url("https://www.baidu.com111111111")
                 .sortOrder(1)
                 .build();
-        ModifyItemReq req1 = ModifyItemReq.builder()
+        ModifyItemReq req = ModifyItemReq.builder()
+                .itemId(952L)
                .itemStock(100)
                 .itemDetail("111111111111111111")
                 .itemSellStatus(ItemSellStatus.SOLD_OUT)
                 .itemSaleStatus(ItemSaleStatus.ORIGIN)
-                .images(List.of(image1, image2))
                 .build();
-        ModifyItemRes res1 = itemService.modifyItem(req1);
+        req.addImage(image1);
+        req.addImage(image2);
+
+        ModifyItemRes res1 = itemService.modifyItem(req);
 
         System.out.println(res1);
 

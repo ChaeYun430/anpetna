@@ -1,5 +1,6 @@
 package com.anpetna.item.dto.deleteItem;
 
+import com.anpetna.item.dto.registerItem.RegisterItemRes;
 import lombok.Builder;
 
 @Builder
@@ -12,4 +13,9 @@ public class DeleteItemRes {
     private Long itemId;
     private String itemName;              // 삭제된 상품명 (선택)
     private String res;            // "DELETED"
+
+    public DeleteItemRes deleted(){
+        this.res = "deleted";
+        return this;
+    }
 }

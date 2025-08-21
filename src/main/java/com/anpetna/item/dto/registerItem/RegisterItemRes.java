@@ -25,6 +25,10 @@ public class RegisterItemRes extends BaseReq {
 
     private String res;
 
+    public RegisterItemRes registered(){
+        this.res = "registered";
+        return this;
+    }
     //  UI(관리자페이지)
     //  "~~~" 상품이 등록되었습니다. → [상세 보기]...
 }

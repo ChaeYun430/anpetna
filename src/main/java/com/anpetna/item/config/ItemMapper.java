@@ -36,12 +36,10 @@ public class ItemMapper {
        return imageToEntity(typeMap);
    }
 
-   public TypeMap<ItemEntity, RegisterItemRes> cItemMapRes() {
-        TypeMap<ItemEntity, RegisterItemRes> typeMap = modelMapper.createTypeMap(ItemEntity.class, RegisterItemRes.class);
-        typeMap.addMappings(mapper -> {mapper.skip(RegisterItemRes::setRes);});
-        return imageToDTO(typeMap);
+    public TypeMap<ModifyItemReq, ItemEntity> uItemMapReq() {
+        TypeMap<ModifyItemReq, ItemEntity> typeMap = modelMapper.createTypeMap(ModifyItemReq.class, ItemEntity.class);
+        return imageToEntity(typeMap);
     }
-
 
 
     public TypeMap<ItemEntity, SearchOneItemRes> r1ItemMapRes() {

@@ -1,9 +1,13 @@
 package com.anpetna.item.dto.modifyItem;
 
+import com.anpetna.item.dto.BaseReq;
+import com.anpetna.item.dto.deleteItem.DeleteItemRes;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Setter
 public class ModifyItemRes {
 
@@ -16,4 +20,9 @@ public class ModifyItemRes {
     private Integer itemStock;        // 수정된 재고
     private LocalDateTime latestDate;
     private String res;        // "UPDATED"
+
+    public ModifyItemRes modified(){
+        this.res = "modified";
+        return this;
+    }
 }

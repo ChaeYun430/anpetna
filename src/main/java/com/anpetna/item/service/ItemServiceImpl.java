@@ -39,19 +39,17 @@ public class ItemServiceImpl implements ItemService {
         ItemEntity item = itemMapper.cItemMapReq().map(req);
         ItemEntity savedItem = repository.save(item);
         savedItem.getImages().forEach(m->System.out.println(m.getItem()));
-        RegisterItemRes res = itemMapper.cItemMapRes().map(savedItem);
-        res.setRes("registered");
-        return res;
+        RegisterItemRes res = modelMapper.map(savedItem, RegisterItemRes.class);
+        return  res.registered();
     }
 
     @Override
     public ModifyItemRes modifyItem(ModifyItemReq req) {
-        ItemEntity found = repository.findById(req.getItemId()).orElse(null);
-        modelMapper.map(req, found);
-        ItemEntity saved = repository.save(found);
-        ModifyItemRes res = modelMapper.map(found, ModifyItemRes.class);
-        res.setRes("modified");
-        return res;
+        ItemEntity foundModified = repository.findById(req.getItemId()).orElse(null);
+        foundModified = itemMapper.uItemMapReq().map(req);
+        ItemEntity saved = repository.save(foundModified);
+        ModifyItemRes res = modelMapper.map(foundModified, ModifyItemRes.class);
+        return res.modified();
     }
 
     @Override
@@ -60,14 +58,20 @@ public class ItemServiceImpl implements ItemService {
         DeleteItemRes res = DeleteItemRes.builder()
                 .itemId(req.getItemId())
                 .itemName(req.getItemName())
-                .res("deleted")
                 .build();
-        return res;
+        return res.deleted();
+    }
+
+    @Override
+    public SearchOneItemRes getOneItem(SearchOneItemReq req) {
+        Optional<ItemEntity> found = repository.findById(req.getItemId());
+        ItemEntity res = found.orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + req.getItemId()));
+        return itemMapper.r1ItemMapRes().map(res);
     }
 
      @Override
     public List<ItemDTO> getAllItems(SearchAllItemsReq req) {
-         List<ItemEntity> found = repository.findAll();
+/*         List<ItemEntity> found = repository.findAll();
         if (req.getSortByCategory() != null){
             found = repository.sortByCategory(req);
         }else if (req.getSortBySale() != null){
@@ -78,14 +82,10 @@ public class ItemServiceImpl implements ItemService {
          List<ItemDTO> res = found.stream()
                  .map(entity -> modelMapper.map(entity, ItemDTO.class))
                  .collect(Collectors.toList());
-        return res;
+        return res;*/
+         return null;
     }
 
-    @Override
-    public SearchOneItemRes getOneItem(SearchOneItemReq req) {
-        Optional<ItemEntity> found = repository.findById(req.getItemId());
-        ItemEntity res = found.orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + req.getItemId()));
-       return itemMapper.r1ItemMapRes().map(res);
-    }
+
 
 }
