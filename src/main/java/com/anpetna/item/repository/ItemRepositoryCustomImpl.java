@@ -17,11 +17,11 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     //  custom시
 
     QItemEntity qItem = QItemEntity.itemEntity;
-
     private final JPAQueryFactory queryFactory;
 
     @Autowired
     public ItemRepositoryCustomImpl(EntityManager em) {
+
         this.queryFactory = new JPAQueryFactory(em);
     }
 
@@ -49,5 +49,4 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     //예외처리해야함..
-
 }

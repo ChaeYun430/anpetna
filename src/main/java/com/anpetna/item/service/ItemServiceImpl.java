@@ -38,7 +38,7 @@ public class ItemServiceImpl implements ItemService {
     public RegisterItemRes registerItem(RegisterItemReq req) {
         ItemEntity item = itemMapper.cItemMapReq().map(req);
         ItemEntity savedItem = repository.save(item);
-        savedItem.getImages().forEach(m->System.out.println(m.getItem()));
+        //savedItem.getImages().forEach(m->System.out.println(m.getItem()));
         RegisterItemRes res = modelMapper.map(savedItem, RegisterItemRes.class);
         return  res.registered();
     }
@@ -85,7 +85,4 @@ public class ItemServiceImpl implements ItemService {
         return res;*/
          return null;
     }
-
-
-
 }
