@@ -4,6 +4,7 @@ import com.anpetna.item.config.ItemMapper;
 import com.anpetna.item.config.ReviewMapper;
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.domain.ReviewEntity;
+import com.anpetna.item.dto.ItemDTO;
 import com.anpetna.item.dto.ReviewDTO;
 import com.anpetna.item.dto.deleteItem.DeleteItemRes;
 import com.anpetna.item.dto.deleteReview.DeleteReviewReq;
@@ -19,10 +20,12 @@ import com.anpetna.item.dto.searchOneReview.SearchOneReviewReq;
 import com.anpetna.item.dto.searchOneReview.SearchOneReviewRes;
 import com.anpetna.item.repository.ItemJpaRepository;
 import com.anpetna.item.repository.ReviewJpaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 //  item(ONE)을 등록하면 image(MANY)가 등록
 //  review(ONE)을 등록하면 item(ONE)가 등록
@@ -67,15 +70,27 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public SearchOneReviewRes getOneReview(SearchOneReviewReq req) {
-
-
-        return null;
+        Optional<ReviewEntity> found = repository.findById(req.getReviewId());
+        ReviewEntity res = found.orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + req.getReviewId()));
+        return reviewMapper.r1ReviewMapRes().map(res);
     }
 
     @Override
     public List<ReviewDTO> getAllReviews(SearchAllReviewsReq req) {
+        List<ReviewEntity> found = null;
+        //  사용자는 둘 중 하나를 선택하고 DTO에는 값이 하나만 지정된다.
+        if (req.getOrderByRegDate() != null){
+            found = repository.orderByRegDate(req);
+        }else if (req.getOrderByRating() != null){
+            found = repository.orderByRating(req);
+        }
 
-        return List.of();
+        List<ReviewDTO> res  = null;
+        found.forEach(reviewEntity -> {
+            res.add(reviewMapper.rReviewMapRes().map(reviewEntity));
+        });
+
+        return res;
     }
 
 

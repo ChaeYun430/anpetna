@@ -1,5 +1,6 @@
 package com.anpetna.item.service;
 
+import com.anpetna.item.dto.ReviewDTO;
 import com.anpetna.item.dto.deleteReview.DeleteReviewReq;
 import com.anpetna.item.dto.deleteReview.DeleteReviewRes;
 import com.anpetna.item.dto.modifyReview.ModifyReviewReq;
@@ -21,7 +22,7 @@ public interface ReviewService {
 
     DeleteReviewRes deleteReview(DeleteReviewReq req);
 
-    List<SearchAllReviewsRes> getAllReviews(SearchAllReviewsReq req);
+    List<ReviewDTO> getAllReviews(SearchAllReviewsReq req);
 
     SearchOneReviewRes getOneReview(SearchOneReviewReq req);
 
