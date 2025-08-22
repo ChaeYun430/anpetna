@@ -44,23 +44,12 @@ public class ItemMapper {
 
     public TypeMap<ItemEntity, SearchOneItemRes> r1ItemMapRes() {
         TypeMap<ItemEntity, SearchOneItemRes> typeMap = modelMapper.createTypeMap(ItemEntity.class, SearchOneItemRes.class);
+        return imageToDTO(typeMap);
+    }
 
-        typeMap.setPostConverter(ctx -> {
-            ItemEntity src = ctx.getSource();
-            SearchOneItemRes des = ctx.getDestination();
-
-            if (src.getImages() != null && !src.getImages().isEmpty()) {
-                des.setImages(
-                        src.getImages().stream()
-                                .map(img -> modelMapper.map(img, ImageDTO.class))
-                                .collect(Collectors.toList())
-                );
-            } else {
-                des.setImages(null); // 명시적으로 null 내려줌
-            }
-            return des;
-        });
-        return typeMap;
+    public TypeMap<ItemEntity, ItemDTO> rItemMapRes() {
+        TypeMap<ItemEntity, ItemDTO> typeMap = modelMapper.createTypeMap(ItemEntity.class, ItemDTO.class);
+        return imageToDTO(typeMap);
     }
 
     public <S extends BaseReq>TypeMap imageToEntity(TypeMap<S, ItemEntity> typeMap) {

@@ -19,12 +19,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.anpetna.coreDomain.QImageEntity.imageEntity;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -45,8 +42,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ModifyItemRes modifyItem(ModifyItemReq req) {
-        ItemEntity foundModified = repository.findById(req.getItemId()).orElse(null);
-        foundModified = itemMapper.uItemMapReq().map(req);
+        ItemEntity foundModified = itemMapper.uItemMapReq().map(req);
         ItemEntity saved = repository.save(foundModified);
         ModifyItemRes res = modelMapper.map(foundModified, ModifyItemRes.class);
         return res.modified();
@@ -71,18 +67,22 @@ public class ItemServiceImpl implements ItemService {
 
      @Override
     public List<ItemDTO> getAllItems(SearchAllItemsReq req) {
-/*         List<ItemEntity> found = repository.findAll();
+
+        List<ItemEntity> found = null;
+        //  사용자는 셋 중 하나를 선택하고 DTO에는 값이 하나만 지정된다.
         if (req.getSortByCategory() != null){
             found = repository.sortByCategory(req);
         }else if (req.getSortBySale() != null){
-            found = repository.orderBySales(req);
-        }else if (req.getSortByPrice() != null){
-            found  = repository.orderByPrice(req);
+            found = repository.sortBySales(req);
+        }else if (req.getOrderByPriceDir() != null){
+            found  = repository.orderByPriceDir(req);
         }
-         List<ItemDTO> res = found.stream()
-                 .map(entity -> modelMapper.map(entity, ItemDTO.class))
-                 .collect(Collectors.toList());
-        return res;*/
-         return null;
+
+        List<ItemDTO> res  = null;
+        found.forEach(itemEntity -> {
+             res.add(itemMapper.rItemMapRes().map(itemEntity));
+         });
+
+        return res;
     }
 }
