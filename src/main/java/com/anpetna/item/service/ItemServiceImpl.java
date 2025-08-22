@@ -1,6 +1,5 @@
 package com.anpetna.item.service;
 
-import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.item.config.ItemMapper;
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.dto.ItemDTO;
@@ -16,20 +15,24 @@ import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.repository.ItemJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    @Autowired
-    private ItemJpaRepository repository;
-    private ModelMapper modelMapper = new ModelMapper();
-    private ItemMapper itemMapper = new ItemMapper();
+    private final ItemJpaRepository repository;
+    private final ModelMapper modelMapper;
+    private final ItemMapper itemMapper;
+
+    //  생성자 주입 관련해 생각해야함..
+    public ItemServiceImpl(ItemJpaRepository repository, ItemMapper itemMapper, ModelMapper modelMapper) {
+        this.repository = repository;
+        this.itemMapper = itemMapper;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public RegisterItemRes registerItem(RegisterItemReq req) {
@@ -44,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
     public ModifyItemRes modifyItem(ModifyItemReq req) {
         ItemEntity foundModified = itemMapper.uItemMapReq().map(req);
         ItemEntity saved = repository.save(foundModified);
-        ModifyItemRes res = modelMapper.map(foundModified, ModifyItemRes.class);
+        ModifyItemRes res = modelMapper.map(saved, ModifyItemRes.class);
         return res.modified();
     }
 

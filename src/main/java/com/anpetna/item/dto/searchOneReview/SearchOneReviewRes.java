@@ -4,11 +4,12 @@ import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
+import com.anpetna.item.dto.BaseReq;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchOneReviewRes {
+public class SearchOneReviewRes extends BaseReq {
 
     private Long itemId; // 상품코드
 
@@ -25,7 +26,5 @@ public class SearchOneReviewRes {
     private ItemSaleStatus itemSaleStatus; // 상품 세일상태
 
     private ItemCategory itemCategory; // 상품 카테고리
-
-    private List<ImageEntity> itemImages = new ArrayList<>();
 
 }
