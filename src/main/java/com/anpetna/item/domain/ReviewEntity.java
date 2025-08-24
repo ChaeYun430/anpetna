@@ -37,9 +37,9 @@ public class ReviewEntity extends BaseEntity {
     private ItemEntity item;
 
     // member FK 추가
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",referencedColumnName = "member_id")
-    private MemberEntity memberId;
+    private MemberEntity member;
 
     @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)

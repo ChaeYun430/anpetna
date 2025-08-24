@@ -38,21 +38,18 @@ public class ReviewServiceImpl implements ReviewService {
     private final ModelMapper modelMapper;
     private final ReviewMapper reviewMapper;
 
-
     //해당 itemId가 실제 존재하는지 확인 (existsById / findById) (= 리뷰 쓸려고 했는데 상품이 그 사이 삭제되는 경우 검증)
     //유저가 실제 그 상품을 구매했는지 검증 (구매자만 리뷰 가능하도록)
     //별점 값 범위 검증(1~5) -> controller의 dto
     //중복 리뷰 제한(같은 주문에 대해 여러 번 작성 방지)
     @Override
     public RegisterReviewRes registerReview(RegisterReviewReq req) {
-        Optional<ItemEntity> item = itemRepository.findById(req.getItemId()); //-> entity가 필요없음
-
-        //  review.setItem(entityManager.getReference(Item.class, itemId)); -> 프록시 객체 :  FK 연결 + 향후 상품 데이터 접근 가능
-       /* boolean isItemExist = itemRepository.existsById(req.getItemId()); //DTO의 id 검증로직
+        // Optional<ItemEntity> item = itemRepository.findById(req.getItemId()); -> 등록하는데 entity가 필요없음
+        // review.setItem(entityManager.getReference(Item.class, itemId)); -> 프록시 객체 :  FK 연결 + 향후 상품 데이터 접근 가능
+        boolean isItemExist = itemRepository.existsById(req.getItemId()); // DTO의 id 검증로직
         if (!isItemExist) {
             throw new IllegalArgumentException("상품이 존재하지 않습니다.");
-        }*/
-
+        }
         ReviewEntity reqEntity = reviewMapper.cReviewMapReq().map(req); //  현재 dto의 Long과 entity의 ItemEntity타입 mapping 문제 -> typemap으로 해결
         ReviewEntity saved = reviewRepository.save(reqEntity);
         RegisterReviewRes res = modelMapper.map(saved, RegisterReviewRes.class);

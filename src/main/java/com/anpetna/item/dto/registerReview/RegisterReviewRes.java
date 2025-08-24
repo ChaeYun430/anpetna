@@ -1,11 +1,13 @@
 package com.anpetna.item.dto.registerReview;
 
 import com.anpetna.coreDto.ImageDTO;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 public class RegisterReviewRes {
 
     private Long reviewId;

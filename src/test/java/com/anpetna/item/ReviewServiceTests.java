@@ -29,7 +29,6 @@ public class ReviewServiceTests {
     ReviewService reviewService;
 
     @Test
-    @Transactional
     public void registerReview() {
         //given
         ImageDTO image1 = ImageDTO.builder()
