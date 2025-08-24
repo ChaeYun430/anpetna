@@ -56,6 +56,35 @@ public class ReviewServiceTests {
         log.info(res);
     }
 
+    @Test
+    public void modifyReview(){
+        //  item은 건드릴 필요없음
+        //  리뷰 수정은 아이디로 조회 후 내용, 별점, 이미지 수정 가능
+        //given
+        ImageDTO image1 = ImageDTO.builder()
+                .fileName("수정한 이미지 파일1")
+                .url("https://www.baidu.com11111111")
+                .sortOrder(1)
+                .build();
+        ImageDTO image2 = ImageDTO.builder()
+                .fileName("수정한 이미지 파일2")
+                .url("https://www.baidu.com222222222")
+                .sortOrder(1)
+                .build();
+        ModifyReviewReq req = ModifyReviewReq.builder()
+                .content("수정된 내용")
+                .rating(5)
+                .reviewId(7L)
+                .build();
+        req.addImage(image1);
+        req.addImage(image2);
+
+        //when
+        ModifyReviewRes res = reviewService.modifyReview(req);
+
+        //then
+        log.info(res);
+    }
 /*    @Test
     @Transactional
     public void searchOneReview() {
@@ -84,32 +113,7 @@ public class ReviewServiceTests {
 
     }*/
 
-    @Test
-    @Transactional
-    public void modifyReview(){
-        //  item은 건드릴 필요없음
-        ImageDTO image1 = ImageDTO.builder()
-                .fileName("이미지파일1111")
-                .url("https://www.baidu.com11111111")
-                .sortOrder(1)
-                .build();
-        ImageDTO image2 = ImageDTO.builder()
-                .fileName("이미지파일2111111111")
-                .url("https://www.baidu.com111111111")
-                .sortOrder(1)
-                .build();
-        ModifyReviewReq req = ModifyReviewReq.builder()
-                .content("수정된 내용")
-                .rating(5)
-                .build();
-        req.addImage(image1);
-        req.addImage(image2);
 
-        ModifyReviewRes res1 = reviewService.modifyReview(req);
-
-        System.out.println(res1);
-
-    }
 
     @Test
     public void deleteItem(){

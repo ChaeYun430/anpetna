@@ -32,7 +32,7 @@ public class ReviewEntity extends BaseEntity {
     @Column(name = "review_rating", nullable = false)
     private int rating;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemEntity item;
 

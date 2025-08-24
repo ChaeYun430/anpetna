@@ -1,7 +1,8 @@
 package com.anpetna.item.dto.modifyReview;
 
 import com.anpetna.coreDto.ImageListDTO;
-import com.anpetna.item.dto.ItemDTO;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,7 +14,8 @@ public class ModifyReviewReq extends ImageListDTO {
 
     private String content;
 
+    @Min(1)
+    @Max(5)
     private int rating;
-
 
 }

@@ -63,9 +63,10 @@ public class ReviewMapper {
     //리뷰 저장할 때 JPA가 “아 이거 Item 엔티티구나, id만 있으니까 FK만 넣으면 되겠네” 하고 INSERT 시 item_id 채워줌
 
 
-
+    @Transactional
     public TypeMap<ModifyReviewReq, ReviewEntity> uReviewMapReq() {
         TypeMap<ModifyReviewReq, ReviewEntity> typeMap = modelMapper.createTypeMap(ModifyReviewReq.class, ReviewEntity.class);
+        log.info(typeMap.getMappings());
         return imageToEntity(typeMap);
     }
 
@@ -81,12 +82,11 @@ public class ReviewMapper {
 
     //  후처리 로직이 단순하다면 메서드로 분리시켜도 좋을듯
 
+    @Transactional
     public <S extends ImageListDTO>TypeMap imageToEntity(TypeMap<S, ReviewEntity> typeMap) {
         typeMap.setPostConverter(ctx-> {
             var src = ctx.getSource();
             var des = ctx.getDestination();
-
-            des.getImages().clear();
 
             try{
                 src.getImages().forEach(imgDTO -> des.addImage(modelMapper.map(imgDTO, ImageEntity.class)));

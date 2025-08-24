@@ -16,9 +16,7 @@ public class ModifyReviewRes {
 
     private Long reviewId;
 
-    private LocalDateTime modDate;
-
-    private ItemDTO itemId;
+    private LocalDateTime latestDate;
 
     private String res;
 

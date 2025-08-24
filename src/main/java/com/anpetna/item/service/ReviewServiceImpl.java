@@ -19,8 +19,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,24 +43,32 @@ public class ReviewServiceImpl implements ReviewService {
     //유저가 실제 그 상품을 구매했는지 검증 (구매자만 리뷰 가능하도록)
     //별점 값 범위 검증(1~5) -> controller의 dto
     //중복 리뷰 제한(같은 주문에 대해 여러 번 작성 방지)
+
+    /*자화자찬
+    불필요한 DB 조회 제거
+    예외 처리 명확 (404)
+    매핑 문제 TypeMap으로 깔끔하게 해결
+    */
     @Override
     public RegisterReviewRes registerReview(RegisterReviewReq req) {
         // Optional<ItemEntity> item = itemRepository.findById(req.getItemId()); -> 등록하는데 entity가 필요없음
         // review.setItem(entityManager.getReference(Item.class, itemId)); -> 프록시 객체 :  FK 연결 + 향후 상품 데이터 접근 가능
-        boolean isItemExist = itemRepository.existsById(req.getItemId()); // DTO의 id 검증로직
-        if (!isItemExist) {
-            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
+        if (!itemRepository.existsById(req.getItemId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"상품이 존재하지 않습니다."); //404
         }
         ReviewEntity reqEntity = reviewMapper.cReviewMapReq().map(req); //  현재 dto의 Long과 entity의 ItemEntity타입 mapping 문제 -> typemap으로 해결
         ReviewEntity saved = reviewRepository.save(reqEntity);
+        log.info(saved.toString());
         RegisterReviewRes res = modelMapper.map(saved, RegisterReviewRes.class);
         return res.registered();
     }
 
     @Override
     public ModifyReviewRes modifyReview(ModifyReviewReq req) {
-        ReviewEntity foundModified = reviewMapper.uReviewMapReq().map(req);
-        ReviewEntity saved = reviewRepository.save(foundModified);
+        ReviewEntity found = reviewRepository.findById(req.getReviewId())   //db에서 찾아서
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "리뷰가 존재하지 않습니다."));
+        reviewMapper.uReviewMapReq().map(req, found);   //nullskip을 이용해 덮고
+        ReviewEntity saved = reviewRepository.save(found);  //저장한다.
         ModifyReviewRes res = modelMapper.map(saved, ModifyReviewRes.class);
         return res.modified();
     }
