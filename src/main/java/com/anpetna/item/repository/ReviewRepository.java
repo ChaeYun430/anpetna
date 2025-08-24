@@ -10,4 +10,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long>, Rev
     @Query("SELECT COUNT(r) > 0 FROM ReviewEntity r WHERE r.reviewId = :reviewId AND r.memberId = :memberId")
     boolean IsOwnerOfReview(Long reviewId, String memberId);
 
+
+
 }

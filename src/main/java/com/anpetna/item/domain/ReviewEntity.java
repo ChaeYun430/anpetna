@@ -1,5 +1,6 @@
 package com.anpetna.item.domain;
 
+import com.anpetna.coreDomain.BaseEntity;
 import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.member.domain.MemberEntity;
 import jakarta.persistence.*;
@@ -12,13 +13,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "anpetna_review")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Check(constraints = "review_rating BETWEEN 1 AND 5")  // 애플리케이션 레벨 제약
-@ToString(exclude = "images")
-public class ReviewEntity {
+@Setter
+@Getter
+@Check(constraints = "review_rating BETWEEN 1 AND 5")  // 애플리케이션 레벨 제약 → 코드 차원 (컨트롤러, DTO, 서비스, 도메인 객체 등)에서 검증
+@ToString
+public class ReviewEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
@@ -30,16 +32,13 @@ public class ReviewEntity {
     @Column(name = "review_rating", nullable = false)
     private int rating;
 
-    @Column(name = "review_regDate", nullable = false)
-    private LocalDateTime regDate;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "item_id", nullable = false, referencedColumnName = "item_id")
-    private ItemEntity itemId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id")
+    private ItemEntity item;
 
     // member FK 추가
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "member_id", nullable = false, referencedColumnName = "member_id")
+    @JoinColumn(name = "member_id",referencedColumnName = "member_id")
     private MemberEntity memberId;
 
     @Builder.Default
@@ -47,6 +46,8 @@ public class ReviewEntity {
     private List<ImageEntity> images = new ArrayList<>();
     //  최대 5장
 
+    //  타 사용자의 공감..
+    //  옵션별 정렬
     public void addImage(ImageEntity image) {
         images.add(image);
         image.setReview(this);

@@ -6,10 +6,7 @@ import com.anpetna.item.domain.ReviewEntity;
 import com.anpetna.member.domain.MemberEntity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "anpetna_image")
@@ -19,7 +16,7 @@ import lombok.Setter;
 public class ImageEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_uuid")
     private Long  uuid;
 

@@ -11,6 +11,7 @@ import com.anpetna.item.dto.searchAllReview.SearchAllReviewsReq;
 import com.anpetna.item.dto.searchOneReview.SearchOneReviewReq;
 import com.anpetna.item.dto.searchOneReview.SearchOneReviewRes;
 import com.anpetna.item.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -33,11 +34,11 @@ public class ReviewController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     //컨트롤러나 서비스 메서드 실행 전에 SpEL(Security Expression Language)로 권한 검증
-    public ResponseEntity<RegisterReviewRes> registerReview(@RequestBody RegisterReviewReq req) {
+    public ResponseEntity<RegisterReviewRes> registerReview(@Valid @RequestBody RegisterReviewReq req) {
         var postResult = reviewService.registerReview(req);
         return new ResponseEntity<>(postResult, HttpStatus.OK);
     }
-
+    //  @Valid에 대해 찾아볼 것
     @PutMapping
     public ResponseEntity<ModifyReviewRes> updateReview(@RequestBody ModifyReviewReq req) {
         var putResult = reviewService.modifyReview(req);

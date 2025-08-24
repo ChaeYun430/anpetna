@@ -56,6 +56,10 @@ public class ItemEntity extends BaseEntity {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();
 
+    //  fk 설정용 생성자
+    public ItemEntity(Long itemId) {
+        this.itemId = itemId;
+    }
 
     public void addImage(ImageEntity image) {
         images.add(image);

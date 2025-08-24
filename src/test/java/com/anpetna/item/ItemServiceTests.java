@@ -11,11 +11,14 @@ import com.anpetna.item.dto.modifyItem.ModifyItemReq;
 import com.anpetna.item.dto.modifyItem.ModifyItemRes;
 import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemRes;
+import com.anpetna.item.dto.registerReview.RegisterReviewReq;
+import com.anpetna.item.dto.registerReview.RegisterReviewRes;
 import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.service.ItemService;
 import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.query.SortDirection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
+@Log4j2
 @SpringBootTest
 @ActiveProfiles("item")
 public class ItemServiceTests {
@@ -59,7 +63,7 @@ public class ItemServiceTests {
         RegisterItemRes res = itemService.registerItem(req);
 
         //then
-        System.out.println(res);
+        log.info(res.toString());
     }
 
     @Test
@@ -126,4 +130,6 @@ public class ItemServiceTests {
         DeleteItemRes res = itemService.deleteItem(req);
         System.out.println(res);
     }
+
+
 }
