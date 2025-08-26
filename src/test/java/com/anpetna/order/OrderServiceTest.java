@@ -1,4 +1,4 @@
-package com.anpetna;
+package com.anpetna.order;
 
 import com.anpetna.order.domain.OrderEntity;
 import com.anpetna.order.repository.OrderRepository;
@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,6 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 교체 금지
 public class OrderServiceTest {
-
 
     @Mock
     OrderRepository orderRepository;
@@ -66,7 +64,7 @@ public class OrderServiceTest {
     void deleteByOrdersId_ok() {
         Long ordersId = 1L;
 
-        orderService.deleteByOrdersId(ordersId);
+        orderService.deleteAllOrdersId(ordersId);
 
         verify(orderRepository).deleteByOrders_OrdersId(ordersId);
         verifyNoMoreInteractions(orderRepository);
@@ -75,7 +73,7 @@ public class OrderServiceTest {
     @Test
     @DisplayName("deleteByOrdersId: null 파라미터면 IllegalArgumentException")
     void deleteByOrdersId_null_throws() {
-        assertThatThrownBy(() -> orderService.deleteByOrdersId(null))
+        assertThatThrownBy(() -> orderService.deleteAllOrdersId(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("ordersId");
         verifyNoInteractions(orderRepository);
