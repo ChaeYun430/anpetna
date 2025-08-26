@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString
-public class ItemDTO extends ImageListDTO {
 
+@ToString
+@NoArgsConstructor
+public class ItemDTO extends ImageListDTO {
 
     private Long itemId; // 상품코드
 

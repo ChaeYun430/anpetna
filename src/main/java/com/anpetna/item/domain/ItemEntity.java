@@ -52,14 +52,12 @@ public class ItemEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)  // DB에 enum의 이름(문자열)으로 저장 (숫자로 저장하는 ORDINAL보다 안전).
     private ItemCategory itemCategory; // 상품 카테고리
 
+/*    @Column(name="item_ThumbsId", nullable=false)
+    private String itemThumbsId;*/
     @Builder.Default
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImageEntity> images = new ArrayList<>();
 
-    //  fk 설정용 생성자
-    public ItemEntity(Long itemId) {
-        this.itemId = itemId;
-    }
 
     public void addImage(ImageEntity image) {
         images.add(image);

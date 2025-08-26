@@ -19,10 +19,8 @@ public interface ReviewService {
 
 
     RegisterReviewRes registerReview(RegisterReviewReq req);
-
     @PreAuthorize("@authEvaluator.authorizeReview(#req.reviewId, principal.getUsername())")
     ModifyReviewRes modifyReview(ModifyReviewReq req);
-
     @PreAuthorize("@authEvaluator.authorizeReview(#req.reviewId, principal.getUsername())")
     DeleteReviewRes deleteReview(DeleteReviewReq req);
 

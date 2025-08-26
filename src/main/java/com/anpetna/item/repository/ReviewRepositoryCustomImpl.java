@@ -30,11 +30,11 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         var dir =  req.getDirection();
         if (dir.equals(SortDirection.DESCENDING)) {
             return queryFactory.selectFrom(qReview)
-                    .orderBy(qReview.createDate.desc())
+                    .orderBy(qReview.regDate.desc())
                     .fetch();
         }else{
             return queryFactory.selectFrom(qReview)
-                    .orderBy(qReview.createDate.asc())
+                    .orderBy(qReview.regDate.asc())
                     .fetch();
         }
     }
