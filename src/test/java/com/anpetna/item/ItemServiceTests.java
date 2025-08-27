@@ -2,7 +2,6 @@ package com.anpetna.item;
 
 import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
-import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import com.anpetna.item.dto.ItemDTO;
 import com.anpetna.item.dto.deleteItem.DeleteItemReq;
@@ -16,7 +15,6 @@ import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.service.ItemService;
 import jakarta.transaction.Transactional;
-import org.hibernate.query.SortDirection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -83,7 +81,12 @@ public class ItemServiceTests {
         List<ItemDTO> res1 = itemService.getAllItems(req);
         System.out.println(res1);*/
 
-        req.setSortByCategory(ItemCategory.TOY);
+       ItemCategory setCategory = ItemCategory.TOY;
+
+        req.setSortByCategory(setCategory);
+        switch (req.){
+
+        }
        List<ItemDTO> res2 = itemService.getAllItems(req);
         System.out.println(res2.toString());
 

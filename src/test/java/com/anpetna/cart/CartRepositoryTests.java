@@ -4,7 +4,6 @@ import com.anpetna.cart.domain.CartEntity;
 import com.anpetna.cart.repository.CartRepository;
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.constant.ItemCategory;
-import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import com.anpetna.member.domain.MemberEntity;
 import com.anpetna.member.constant.MemberRole;

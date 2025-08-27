@@ -2,7 +2,6 @@ package com.anpetna.item.dto.searchOneItem;
 
 import com.anpetna.coreDto.ImageListDTO;
 import com.anpetna.item.constant.ItemCategory;
-import com.anpetna.item.constant.ItemSaleStatus;
 import com.anpetna.item.constant.ItemSellStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -8,6 +8,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +19,6 @@ import java.util.List;
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     //  QuerydslRepositorySupport 대신 Repository를 custom하여 ItemJPARepository에 상속
-    //  custom시
 
     QItemEntity qItem = QItemEntity.itemEntity;
     private final JPAQueryFactory queryFactory;
@@ -27,12 +29,24 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public List<ItemEntity> sortByCategory(SearchAllItemsReq req) {
-
+    public Page<ItemEntity> sortByCategory(Pageable pageable) {
+        pageable.getSort()
         return queryFactory.selectFrom(qItem)
                 .where(qItem.itemCategory.eq(req.getSortByCategory()))
-                .fetch();
+                .fetch();;
     }
+
+    @Override
+    public Page<ItemEntity> sortBySales(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public Page<ItemEntity> orderByPriceDir(Pageable pageable) {
+        return null;
+    }
+
+
 
       @Override
     public List<ItemEntity> sortBySales(SearchAllItemsReq req) {

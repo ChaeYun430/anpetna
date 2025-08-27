@@ -2,6 +2,8 @@ package com.anpetna.item.repository;
 
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,11 +11,11 @@ import java.util.List;
 @Repository
 public interface ItemRepositoryCustom {
 
-    List<ItemEntity> sortByCategory(SearchAllItemsReq req);
+    Page<ItemEntity> sortByCategory(Pageable pageable);
 
-    List<ItemEntity> sortBySales(SearchAllItemsReq req);
+    Page<ItemEntity> sortBySales(Pageable pageable);
 
-    List<ItemEntity> orderByPriceDir(SearchAllItemsReq req);
+    Page<ItemEntity> orderByPriceDir(Pageable pageable);
 
-
+    List<ItemEntity> searchAll(SearchAllItemsReq req);
 }
