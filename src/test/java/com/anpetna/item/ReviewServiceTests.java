@@ -7,15 +7,11 @@ import com.anpetna.item.dto.modifyReview.ModifyReviewReq;
 import com.anpetna.item.dto.modifyReview.ModifyReviewRes;
 import com.anpetna.item.dto.registerReview.RegisterReviewReq;
 import com.anpetna.item.dto.registerReview.RegisterReviewRes;
-import com.anpetna.item.dto.searchOneReview.SearchOneReviewReq;
-import com.anpetna.item.dto.searchOneReview.SearchOneReviewRes;
 import com.anpetna.item.service.ReviewService;
-import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -29,7 +25,6 @@ public class ReviewServiceTests {
     ReviewService reviewService;
 
     @Test
-    @Transactional
     public void registerReview() {
         //given
         ImageDTO image1 = ImageDTO.builder()
@@ -86,7 +81,6 @@ public class ReviewServiceTests {
     }*/
 
     @Test
-    @Transactional
     public void modifyReview(){
         //  item은 건드릴 필요없음
         ImageDTO image1 = ImageDTO.builder()
