@@ -1,4 +1,4 @@
-package com.anpetna.board;
+package com.anpetna.board.service;
 
 import com.anpetna.board.domain.BoardEntity;
 import com.anpetna.board.constant.BoardType;
@@ -11,7 +11,7 @@ import com.anpetna.board.dto.readOneBoard.ReadOneBoardRes;
 import com.anpetna.board.dto.updateBoard.UpdateBoardReq;
 import com.anpetna.board.dto.updateBoard.UpdateBoardRes;
 import com.anpetna.board.repository.BoardJpaRepository;
-import com.anpetna.board.service.BoardService;
+import com.anpetna.coreDomain.ImageEntity;
 import com.anpetna.coreDto.ImageDTO;
 import com.anpetna.coreDto.PageRequestDTO;
 import com.anpetna.coreDto.PageResponseDTO;
@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Log4j2
 public class BoardServiceTests {
 
-/*
     @Autowired
     private BoardService boardService;
 
@@ -198,6 +197,5 @@ public class BoardServiceTests {
 
         assertFalse(boardJpaRepository.findById(existingBno).isPresent());
     }
-*/
 
 }
