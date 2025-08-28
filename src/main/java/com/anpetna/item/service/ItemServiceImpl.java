@@ -1,6 +1,7 @@
 package com.anpetna.item.service;
 
 import com.anpetna.item.config.ItemMapper;
+import com.anpetna.item.constant.ItemSellStatus;
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.dto.ItemDTO;
 import com.anpetna.item.dto.deleteItem.DeleteItemReq;
@@ -16,11 +17,13 @@ import com.anpetna.item.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,16 +37,16 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public RegisterItemRes registerItem(RegisterItemReq req) {
+    public RegisterItemRes registerItem(RegisterItemReq req, List<MultipartFile> files) {
+
         ItemEntity item = itemMapper.cItemMapReq().map(req);
         ItemEntity savedItem = itemRepository.save(item);
-        //savedItem.getImages().forEach(m->System.out.println(m.getItem()));
         RegisterItemRes res = modelMapper.map(savedItem, RegisterItemRes.class);
         return  res.registered();
     }
 
     @Override
-    public ModifyItemRes modifyItem(ModifyItemReq req) {
+    public ModifyItemRes modifyItem(ModifyItemReq req, List<MultipartFile> files) {
         ItemEntity foundModified = itemMapper.uItemMapReq().map(req);
         ItemEntity saved = itemRepository.save(foundModified);
         ModifyItemRes res = modelMapper.map(saved, ModifyItemRes.class);
@@ -67,30 +70,12 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.r1ItemMapRes().map(res);
     }
 
-     @Override
-    public List<ItemDTO> getAllItems(SearchAllItemsReq req) {
-
-        Pageable pageable = PageRequest.of(req.getPage(), req.getSize(), req.getSort());
-        Page<ItemEntity> getAllItems = itemRepository.findAll(pageable);
-
-
-        List<ItemEntity> found = null;
-        //  사용자는 셋 중 하나를 선택하고 DTO에는 값이 하나만 지정된다.
-        if (req.getSortByCategory() != null){
-            found = itemRepository.sortByCategory(req);
-        }else if (req.getSortBySale() != null){
-            found = itemRepository.sortBySales(req);
-        }else if (req.getOrderByPriceDir() != null){
-            found  = itemRepository.orderByPriceDir(req);
-        }else{
-
-        }
-
-        List<ItemDTO> res  = new ArrayList<>();
-        found.forEach(itemEntity -> {
-             res.add(itemMapper.rItemMapRes().map(itemEntity));
-         });
-
+    @Override
+    public Page<ItemDTO> getAllItems(SearchAllItemsReq req){
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+        Page<ItemEntity> searchAll = itemRepository.orderBy(pageable, req);
+        Page<ItemDTO> res = searchAll.map(itemEntity -> modelMapper.map(itemEntity, ItemDTO.class));
         return res;
     }
+
 }

@@ -17,8 +17,4 @@ public class ModifyItemReq extends ImageListDTO {
 
     private ItemSellStatus itemSellStatus; // 상품 판매상태
 
-    private ItemSaleStatus itemSaleStatus; // 상품 세일상태
-
-
-
 }

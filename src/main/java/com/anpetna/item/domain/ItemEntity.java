@@ -40,8 +40,7 @@ public class ItemEntity extends BaseEntity {
     private String itemDetail; // 상품 상세설명
 
     @Column(name="item_sellStatus")
-    @Enumerated(EnumType.STRING)    // DB에 enum의 이름(문자열)으로 저장 (숫자로 저장하는 ORDINAL보다 안전).
-    private ItemSellStatus itemSellStatus; // 상품 판매상태
+    private Integer itemSellStatus; // 상품 판매상태 (1은 판매중, 0은 품절)
 
     @Column(name="item_saleStatus", nullable=false)
     private int itemSaleStatus; // 상품 세일상태

@@ -34,10 +34,10 @@ public class SecurityConfig {
 
                 // 권한 규칙
                 .authorizeHttpRequests(auth -> auth
-                                // ⭐ 수정됨: preflight 허용
+                                // preflight 허용
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                                // ⭐ 수정됨: 로그인/리프레시/정적/에러 등 완전 허용
+                                // 로그인/리프레시/정적/에러 등 완전 허용
                                 .requestMatchers(
                                         "/jwt/login",
                                         "/jwt/refresh",
@@ -47,56 +47,49 @@ public class SecurityConfig {
                                         "/static/**", "/css/**", "/js/**", "/images/**"
                                 ).permitAll()
 
-                                // ⭐ 수정됨: board / comment 읽기는 모두 허용
+                                // ========================= Board =============================
                                 .requestMatchers(HttpMethod.GET, "/anpetna/board/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/anpetna/comment/**").permitAll()
 
-                                // ⭐ 수정됨: 쓰기/수정/삭제는 인증 필요
-                                .requestMatchers(HttpMethod.POST,   "/anpetna/board/**").authenticated()
-                                .requestMatchers(HttpMethod.PUT,    "/anpetna/board/**").authenticated()
-                                .requestMatchers(HttpMethod.DELETE, "/anpetna/board/**").authenticated()
-                                .requestMatchers(HttpMethod.POST,   "/anpetna/comment/**").authenticated()
-                                .requestMatchers(HttpMethod.DELETE, "/anpetna/comment/**").authenticated()
+                                // ======================== Item =================================
+                                .requestMatchers(HttpMethod.GET, "/items/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
 
-                                // ⭐ 수정됨: 회원가입 허용(필요 시 추가)
+                                // ======================== Member ================================
                                 .requestMatchers("/member/join").permitAll()
 
                                 // 나머지는 인증
                                 .anyRequest().authenticated()
-
-                        // ===== 기존 =====
-                        // .anyRequest().permitAll()
                 )
-
                 // 로그아웃
                 .logout(logout -> logout
-                        // ⭐ 수정됨: /jwt/logout 허용
+                        // jwt/logout 허용
                         .logoutUrl("/jwt/logout").permitAll()
                 )
 
-                // ⭐ 수정됨: 기본 인증/폼 로그인 비활성
+                // 기본 인증/폼 로그인 비활성
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable());
 
         // JWT 필터가 있다면 여기에 추가
         // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
-    // ⭐ 추가: JwtServiceImpl 등에서 주입받는 PasswordEncoder 빈
+    // JwtServiceImpl 등에서 주입받는 PasswordEncoder 빈
     @Bean
     public PasswordEncoder passwordEncoder() {
         // BCrypt 사용 (강도 기본값 10). 필요하면 new BCryptPasswordEncoder(12)로 조정
         return new BCryptPasswordEncoder();
     }
 
-    // ⭐ 수정됨: CORS 허용 설정 추가
+    // CORS 허용 설정 추가
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(List.of(
                 "http://192.168.0.168:3000",
+                "http://192.168.0.160:3000",
                 "http://localhost:3000"
         ));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));

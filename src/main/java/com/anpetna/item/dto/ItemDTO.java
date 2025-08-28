@@ -24,8 +24,6 @@ public class ItemDTO extends ImageListDTO {
 
     private ItemSellStatus itemSellStatus; // 상품 판매상태
 
-    private int itemSaleStatus; // 상품 세일상태
-
     private ItemCategory itemCategory; // 상품 카테고리
 
 }

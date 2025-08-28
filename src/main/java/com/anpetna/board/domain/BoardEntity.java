@@ -54,7 +54,8 @@ public class BoardEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BoardType boardType;    // 게시물 종류
 
-    @Column(nullable = false) @Builder.Default
+    @Column(nullable = false)
+    @Builder.Default
     private Boolean noticeFlag = false;        // 상단 고정 여부
 
     @Column(nullable = false)
@@ -67,7 +68,6 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("sortOrder ASC, uuid ASC") // 08.27 추가
     private List<ImageEntity> images = new ArrayList<>(); // 이미지
-
 
     public void addImage(ImageEntity image) {
         images.add(image);
