@@ -22,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
-import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("item")
@@ -54,8 +53,7 @@ public class ItemServiceTests {
                     .itemCategory(ItemCategory.TOY)
                     .itemSellStatus(1)
                     .build();
-            req.addImage(image1);
-            req.addImage(image2);
+
 
             //when
             RegisterItemRes res = itemService.registerItem(req);

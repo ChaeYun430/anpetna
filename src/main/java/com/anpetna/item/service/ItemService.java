@@ -15,12 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.List;
 
 
 public interface ItemService {
 
-    RegisterItemRes registerItem(RegisterItemReq req,  List<MultipartFile> files);
+    RegisterItemRes registerItem(RegisterItemReq req,  List<MultipartFile> files) throws IOException;
 
     ModifyItemRes modifyItem(ModifyItemReq req,  List<MultipartFile> files);
 
