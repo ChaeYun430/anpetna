@@ -1,6 +1,6 @@
 package com.anpetna.item.dto.registerItem;
 
-import com.anpetna.image.dto.ImageListDTO;
+import com.anpetna.core.coreDto.ImageListDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 @Setter
 @Getter
-public class RegisterItemRes {
+public class RegisterItemRes extends ImageListDTO {
 
     private Long itemId;
 

@@ -1,8 +1,8 @@
 package com.anpetna.item.domain;
 
 
-import com.anpetna.image.domain.ImageEntity;
 import com.anpetna.core.coreDomain.BaseEntity;
+import com.anpetna.core.coreDomain.ImageEntity;
 import com.anpetna.item.constant.ItemCategory;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,7 +41,7 @@ public class ItemEntity extends BaseEntity {
     @Column(name="item_sellStatus")
     private Integer itemSellStatus; // 상품 판매상태 (1은 판매중, 0은 품절)
 
-    @Column(name="item_saleStatus")
+    @Column(name="item_saleStatus", nullable=false)
     private int itemSaleStatus; // 상품 세일상태
 
     @Column(name="item_Category")

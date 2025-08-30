@@ -2,7 +2,7 @@ package com.anpetna.board.domain;
 
 import com.anpetna.board.constant.BoardType;
 import com.anpetna.core.coreDomain.BaseEntity;
-import com.anpetna.image.domain.ImageEntity;
+import com.anpetna.core.coreDomain.ImageEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -54,8 +54,7 @@ public class BoardEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BoardType boardType;    // 게시물 종류
 
-    @Column(nullable = false)
-    @Builder.Default
+    @Column(nullable = false) @Builder.Default
     private Boolean noticeFlag = false;        // 상단 고정 여부
 
     @Column(nullable = false)
@@ -68,6 +67,7 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("sortOrder ASC, uuid ASC") // 08.27 추가
     private List<ImageEntity> images = new ArrayList<>(); // 이미지
+
 
     public void addImage(ImageEntity image) {
         images.add(image);

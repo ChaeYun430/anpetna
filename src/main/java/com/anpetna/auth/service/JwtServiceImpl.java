@@ -6,7 +6,7 @@ import com.anpetna.auth.dto.TokenRequest;
 import com.anpetna.auth.dto.TokenResponse;
 import com.anpetna.auth.repository.TokenRepository;
 import com.anpetna.auth.util.TokenHash;
-import com.anpetna.config.JwtProvider;
+import com.anpetna.auth.config.JwtProvider;
 import com.anpetna.member.domain.MemberEntity;
 import com.anpetna.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +31,16 @@ public class JwtServiceImpl implements JwtService {
     private final BlacklistServiceImpl blacklistService;
 
     @Override
-    public TokenResponse login(LoginMemberReq loginMemberReq){
+    public TokenResponse login(LoginMemberReq loginMemberReq) {
 
         // 1) 사용자 식별자로 토큰 레코드 조회
         MemberEntity member = memberRepository.findByMemberId(loginMemberReq.getMemberId())
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
 // 2) 비밀번호 검증
 //    - passwordEncoder.matches(rawPassword, encodedPassword)
 //    - 요청으로 들어온 평문 비밀번호와 DB에 저장된 암호문을 비교
-        if (!passwordEncoder.matches(loginMemberReq.getMemberPw(),member.getMemberPw())){
+        if (!passwordEncoder.matches(loginMemberReq.getMemberPw(), member.getMemberPw())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다");
         }
 
@@ -69,10 +69,10 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public TokenResponse refresh(TokenRequest tokenRequest){
+    public TokenResponse refresh(TokenRequest tokenRequest) {
 
         //클라이언트가 보낸 refreshToken의 유효성 검사
-        if(!jwtProvider.validateToken(tokenRequest.getRefreshToken())){
+        if (!jwtProvider.validateToken(tokenRequest.getRefreshToken())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "무효한 토큰입니다");
         }
 
@@ -81,16 +81,15 @@ public class JwtServiceImpl implements JwtService {
 
         //DB에서 해당 사용자의 토큰 레코드 조회
         TokenEntity tokenEntity = tokenRepository.findByTokenMemberId(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
 //요청으로 받은 refreshToken을 sha256으로 해싱
 //평문 토큰을 DB에 보관하지 않기 위해 해시로 비교 (유출 대비)
         String reqRefreshToken = tokenHash.sha256(tokenRequest.getRefreshToken()); //요청받은 refresh토큰을 hash로 변환
 
 
-
 //DB에 저장된 해시값과 비교 (불일치 시 위조/재사용/오류로 간주)
-        if (!reqRefreshToken.equals(tokenEntity.getRefreshToken())){
+        if (!reqRefreshToken.equals(tokenEntity.getRefreshToken())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "발급받은 토큰이 맞지 않습니다");
         }
 
@@ -136,20 +135,22 @@ public class JwtServiceImpl implements JwtService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰 소유자 불일치");
         }
 
-        // 4) 리프레시 토큰 회수(로그아웃)
-        tok.setRevokedAt(now);
-        tokenRepository.save(tok);
 
-        // (선택) 동일 사용자 활성 리프레시 전부 회수하고 싶으면 정책에 따라:
-        // tokenRepository.revokeAllActiveByMemberId(subject, now);
+            // 4) 리프레시 토큰 회수(로그아웃)
+            tok.setRevokedAt(now);
+            tokenRepository.save(tok);
 
-        // 5) 액세스 토큰 블랙리스트(있으면) — 즉시 차단
-        String accessPlain = tokenRequest.getAccessToken();
-        if (accessPlain != null && !accessPlain.isBlank()) {
-            // addToBlacklist(TokenRequest)는 내부에서 access 토큰을 파싱/만료시각 추출/해시 저장한다고 가정
-            blacklistService.addToBlacklist(tokenRequest);
+            // (선택) 동일 사용자 활성 리프레시 전부 회수하고 싶으면 정책에 따라:
+            // tokenRepository.revokeAllActiveByMemberId(subject, now);
+
+            // 5) 액세스 토큰 블랙리스트(있으면) — 즉시 차단
+            String accessPlain = tokenRequest.getAccessToken();
+            if (accessPlain != null && !accessPlain.isBlank()) {
+                // addToBlacklist(TokenRequest)는 내부에서 access 토큰을 파싱/만료시각 추출/해시 저장한다고 가정
+                blacklistService.addToBlacklist(tokenRequest);
+            }
+
+            // 멱등성: 이미 회수/블랙리스트여도 예외 없이 위 흐름을 통과하도록 설계하는 게 보통 안전합니다.
+            // 멱등성: 이미 회수/블랙리스트여도 예외 없이 위 흐름을 통과하도록 설계하는 게 보통 안전합니다.
         }
-
-        // 멱등성: 이미 회수/블랙리스트여도 예외 없이 위 흐름을 통과하도록 설계하는 게 보통 안전합니다.
     }
-}

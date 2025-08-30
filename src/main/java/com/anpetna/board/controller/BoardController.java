@@ -16,7 +16,6 @@ import com.anpetna.board.service.BoardService;
 import com.anpetna.core.coreDto.PageRequestDTO;
 import com.anpetna.core.coreDto.PageResponseDTO;
 import jakarta.validation.Valid;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -29,7 +28,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/board")
 @RequiredArgsConstructor
-@NoArgsConstructor(force = true)
 @Validated
 @Log4j2
 public class BoardController {

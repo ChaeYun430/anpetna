@@ -1,6 +1,6 @@
 package com.anpetna.item;
 
-import com.anpetna.image.dto.ImageDTO;
+import com.anpetna.core.coreDto.ImageDTO;
 import com.anpetna.item.constant.ItemCategory;
 import com.anpetna.item.constant.ItemSellStatus;
 import com.anpetna.item.dto.ItemDTO;
@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -54,7 +53,8 @@ public class ItemServiceTests {
                     .itemCategory(ItemCategory.TOY)
                     .itemSellStatus(1)
                     .build();
-
+            req.addImage(image1);
+            req.addImage(image2);
 
             //when
             RegisterItemRes res = itemService.registerItem(req);
@@ -84,6 +84,12 @@ public class ItemServiceTests {
         Page<ItemDTO> res1 = itemService.searchItems(req1);
         log.info(res1.getTotalElements());
 
+/*       SearchAllItemsReq req2 = SearchAllItemsReq.builder()
+               .itemCategory(ItemCategory.TOY)
+               .orderByPrice(Sort.Direction.ASC)
+               .build();
+       Page<ItemDTO> res2 = itemService.searchItems(req1);
+       log.info(res2.toString());*/
     }
 
     @Test
