@@ -1,26 +1,24 @@
 package com.anpetna.item.config;
 
-import com.anpetna.coreDomain.ImageEntity;
-import com.anpetna.coreDto.ImageDTO;
-import com.anpetna.coreDto.ImageListDTO;
+import com.anpetna.image.domain.ImageEntity;
+import com.anpetna.image.dto.ImageDTO;
+import com.anpetna.image.dto.ImageListDTO;
 import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.dto.ItemDTO;
 import com.anpetna.item.dto.modifyItem.ModifyItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@RequiredArgsConstructor
 public class ItemMapper {
 
-    @Autowired
-   private ModelMapper modelMapper = new ModelMapper();
-    //  필드를 final로 꼭 해야하는가
+   private final ModelMapper modelMapper;
 
    public TypeMap<RegisterItemReq, ItemEntity> cItemMapReq() {
        TypeMap<RegisterItemReq, ItemEntity> typeMap = modelMapper.getTypeMap(RegisterItemReq.class, ItemEntity.class);
@@ -32,7 +30,10 @@ public class ItemMapper {
    }
 
     public TypeMap<ModifyItemReq, ItemEntity> uItemMapReq() {
-        TypeMap<ModifyItemReq, ItemEntity> typeMap = modelMapper.createTypeMap(ModifyItemReq.class, ItemEntity.class);
+        TypeMap<ModifyItemReq, ItemEntity> typeMap = modelMapper.getTypeMap(ModifyItemReq.class, ItemEntity.class);
+        if (typeMap==null) {
+            typeMap = modelMapper.createTypeMap(ModifyItemReq.class, ItemEntity.class);
+        }
         return imageToEntity(typeMap);
     }
 

@@ -1,6 +1,6 @@
 package com.anpetna.item.dto.modifyItem;
 
-import com.anpetna.coreDto.ImageListDTO;
+import com.anpetna.image.dto.ImageListDTO;
 import com.anpetna.item.constant.ItemSellStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +16,5 @@ public class ModifyItemReq extends ImageListDTO {
     private String itemDetail; // 상품 상세설명
 
     private ItemSellStatus itemSellStatus; // 상품 판매상태
-
-    private ItemSaleStatus itemSaleStatus; // 상품 세일상태
-
-
 
 }

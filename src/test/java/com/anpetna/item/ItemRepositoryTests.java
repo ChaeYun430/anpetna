@@ -38,8 +38,8 @@ public class ItemRepositoryTests {
                 .itemStock(200)
                 .itemDetail("상품 상세 설명")
                 .itemCategory(ItemCategory.FEED)
-                .itemSellStatus(ItemSellStatus.SELL)
-                .itemSaleStatus(ItemSaleStatus.ONSALE)
+                .itemSellStatus(30)
+                .itemSaleStatus(1)
                 .build();
         ImageEntity.forItem("fileName1", "url1", item, 1);
         ImageEntity.forItem("fileName2", "url2", item, 2);

@@ -13,9 +13,10 @@ import com.anpetna.board.dto.readOneBoard.ReadOneBoardRes;
 import com.anpetna.board.dto.updateBoard.UpdateBoardReq;
 import com.anpetna.board.dto.updateBoard.UpdateBoardRes;
 import com.anpetna.board.service.BoardService;
-import com.anpetna.coreDto.PageRequestDTO;
-import com.anpetna.coreDto.PageResponseDTO;
+import com.anpetna.core.coreDto.PageRequestDTO;
+import com.anpetna.core.coreDto.PageResponseDTO;
 import jakarta.validation.Valid;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -26,8 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/anpetna/board")
+@RequestMapping(value = "/board")
 @RequiredArgsConstructor
+@NoArgsConstructor(force = true)
 @Validated
 @Log4j2
 public class BoardController {
