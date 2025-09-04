@@ -31,7 +31,6 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
     //컨트롤러나 서비스 메서드 실행 전에 SpEL(Security Expression Language)로 권한 검증
     public ResponseEntity<RegisterReviewRes> registerReview(@RequestBody RegisterReviewReq req) {
         var postResult = reviewService.registerReview(req);

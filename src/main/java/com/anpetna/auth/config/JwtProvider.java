@@ -1,5 +1,7 @@
-package com.anpetna.config;
+package com.anpetna.auth.config;
 
+import com.anpetna.member.constant.MemberRole;
+import com.anpetna.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,10 +137,20 @@ public class JwtProvider {
     // Subject/Expiration 유틸
     // =========================================================
 
+    // (필요시 파서에서 쓰도록) Refresh Key 접근 헬퍼
+    public Key getRefreshKeyForParsing() {
+        return refreshKey();
+    }
+
     /** 인증용 subject 추출 — Access 키로만 파싱(Refresh 허용 X). 만료면 예외 → 401 처리 */
     public String getUsernameForAccess(String token) {
         return Jwts.parserBuilder().setSigningKey(accessKey()).build()
                 .parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getUsernameFromRefresh(String refreshToken) {
+        return Jwts.parserBuilder().setSigningKey(refreshKey()).build()
+                .parseClaimsJws(refreshToken).getBody().getSubject();
     }
 
     /** 범용 subject 추출 — Access 실패 시 Refresh로도 시도(로깅/감사/블랙리스트 용) */
@@ -153,11 +165,11 @@ public class JwtProvider {
         return c.getExpiration().toInstant();
     }
 
-    // =========================================================
-    // Authentication (SecurityContext용) — Access 전용
-    // =========================================================
-
-    /** Access 토큰으로만 Authentication 생성 — 리소스 접근 인증에 사용 */
+//    // =========================================================
+//    // Authentication (SecurityContext용) — Access 전용
+//    // =========================================================
+//
+//    /** Access 토큰으로만 Authentication 생성 — 리소스 접근 인증에 사용 */
     public Authentication getAuthentication(String accessToken) {
         var claims = Jwts.parserBuilder().setSigningKey(accessKey()).build()
                 .parseClaimsJws(accessToken).getBody();

@@ -1,8 +1,8 @@
 package com.anpetna.item.config;
 
-import com.anpetna.core.coreDomain.ImageEntity;
-import com.anpetna.core.coreDto.ImageDTO;
-import com.anpetna.core.coreDto.ImageListDTO;
+import com.anpetna.image.domain.ImageEntity;
+import com.anpetna.image.dto.ImageDTO;
+import com.anpetna.image.dto.ImageListDTO;
 import com.anpetna.item.domain.ReviewEntity;
 import com.anpetna.item.dto.ReviewDTO;
 import com.anpetna.item.dto.modifyReview.ModifyReviewReq;
@@ -17,9 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReviewMapper {
 
-
    private final ModelMapper modelMapper;
-    //  필드를 final로 꼭 해야하는가
 
    public TypeMap<RegisterReviewReq, ReviewEntity> cReviewMapReq() {
        TypeMap<RegisterReviewReq, ReviewEntity> typeMap = modelMapper.createTypeMap(RegisterReviewReq.class, ReviewEntity.class);

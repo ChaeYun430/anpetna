@@ -3,14 +3,16 @@ package com.anpetna.core.coreDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Getter
 @ToString
 public class PageResponseDTO<E> { // <E> E 엔티티용 변수명 (변할 수 있는 값 )
-    // 페이징 처리 응답용 객체
-    // dto의 목록, 시작페이지/끝페이지 여부 등...
+    //========페이징 응답객체==========
+    //작은 프로젝트 / 내부 API / 프론트와 구조 맞춰도 되는 경우 → Page<T> 바로 반환 OK
+    //API 표준화 / 외부 공개 / 프론트 요구 맞춤형 구조 필요 → PageResponse<T> 추천
 
     private int page, size, total ; // 현재페이지, 페이지당 게시물수, 총 게시물수
 
@@ -20,7 +22,17 @@ public class PageResponseDTO<E> { // <E> E 엔티티용 변수명 (변할 수 �
     private boolean prev ; // 이전페이지 존재 여부
     private boolean next ; // 다음페이지 존재 여부
 
-    private List<E> dtoList ; // 게시물의 목록
+    private List<E> dtoList ; // 목록
+
+    // 생성자에서 Page 객체 받아서 바로 매핑
+    public PageResponseDTO(Page<E> page) {
+        this.dtoList = page.getContent();
+        this.page = page.getNumber();
+        this.size = page.getSize();
+        this.total= (int)page.getTotalElements();
+        this.prev = page.hasPrevious();
+        this.next = page.hasNext();
+    }
 
     //생성자
     @Builder(builderMethodName = "withAll")  // PageResponsEDTO.<BoardDTO>withAll()
@@ -53,8 +65,6 @@ public class PageResponseDTO<E> { // <E> E 엔티티용 변수명 (변할 수 �
 
         this.prev = this.start > 1 ;   // 이전페이지 유무
         this.next = total > this.end * this.size ; // 다음페이지 유무
-
-
     }
 
 }
