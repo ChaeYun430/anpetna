@@ -1,8 +1,5 @@
 package com.anpetna.config;
 
-import com.anpetna.image.service.FileService;
-import com.anpetna.image.service.LocalStorage;
-import com.anpetna.image.service.S3ImageStorage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,13 +29,13 @@ public class RootConfig {
     @Value("${app.upload.type}")
     private String type;
 
-    @Bean
+ /*   @Bean
     public FileService getStorage(LocalStorage local, S3ImageStorage s3) {
         return switch (type) {
             case "s3" -> s3;
             default -> local;
         };
-    }
+    }*/
 
     @Bean
     public S3Client s3Client(@Value("${app.upload.region}") String region) {

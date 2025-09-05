@@ -41,16 +41,14 @@ public class ItemMapper {
         if (typeMap == null) {
             typeMap = modelMapper.createTypeMap(ItemEntity.class, SearchOneItemRes.class);
         }
-        typeMap.setPostConverter(ctx -> {
+     /*   typeMap.setPostConverter(ctx -> {
             var src = ctx.getSource();
             var des = ctx.getDestination();
-            try {
-                src.getImages().forEach(imgEntity -> des.addImageUrl(imgEntity.getUrl()));
-            } catch (NullPointerException e) {
-                des.setImageUrl(null);
-            }
+                for(ImageEntity entity : src.getImages()) {
+                        des.addImageUrl(entity.getSortOrder(), entity.getUrl());
+                }
             return des;
-        });
+        });*/
         return typeMap;
     }
 
