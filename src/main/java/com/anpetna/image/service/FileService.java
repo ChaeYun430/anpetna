@@ -16,7 +16,7 @@ public interface FileService {
    // app.upload.type : 개발 환경에서는 로컬 저장소, 운영 환경에서는 S3 같은 외부 스토리지 선택
    // s3 key = /files/{fileName}
 
-   ImageDTO uploadFile(MultipartFile files);
+   ImageDTO uploadFile(MultipartFile files, Integer sortOrder);
 
    byte[] downloadFile(String key);
 

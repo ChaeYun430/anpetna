@@ -1,11 +1,8 @@
 package com.anpetna.item.config;
 
 import com.anpetna.image.domain.ImageEntity;
-import com.anpetna.image.dto.ImageListDTO;
 import com.anpetna.item.domain.ItemEntity;
-import com.anpetna.item.dto.modifyItem.ModifyItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemReq;
-import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -25,34 +22,6 @@ public class ItemMapper {
             typeMap = modelMapper.createTypeMap(RegisterItemReq.class, ItemEntity.class);
         }
         typeMap.addMappings(mapper -> mapper.skip(ItemEntity::setItemId));
-        return imageToEntity(typeMap);
-    }
-
-    public TypeMap<ModifyItemReq, ItemEntity> uItemMapReq() {
-        TypeMap<ModifyItemReq, ItemEntity> typeMap = modelMapper.getTypeMap(ModifyItemReq.class, ItemEntity.class);
-        if (typeMap == null) {
-            typeMap = modelMapper.createTypeMap(ModifyItemReq.class, ItemEntity.class);
-        }
-        return imageToEntity(typeMap);
-    }
-
-    public TypeMap<ItemEntity, SearchOneItemRes> rOneItemMapRes() {
-        TypeMap<ItemEntity, SearchOneItemRes> typeMap = modelMapper.getTypeMap(ItemEntity.class, SearchOneItemRes.class);
-        if (typeMap == null) {
-            typeMap = modelMapper.createTypeMap(ItemEntity.class, SearchOneItemRes.class);
-        }
-     /*   typeMap.setPostConverter(ctx -> {
-            var src = ctx.getSource();
-            var des = ctx.getDestination();
-                for(ImageEntity entity : src.getImages()) {
-                        des.addImageUrl(entity.getSortOrder(), entity.getUrl());
-                }
-            return des;
-        });*/
-        return typeMap;
-    }
-
-    public <S extends ImageListDTO> TypeMap imageToEntity(TypeMap<S, ItemEntity> typeMap) {
         typeMap.setPostConverter(ctx -> {
             var src = ctx.getSource();
             var des = ctx.getDestination();
@@ -69,5 +38,4 @@ public class ItemMapper {
         });
         return typeMap;
     }
-
 }

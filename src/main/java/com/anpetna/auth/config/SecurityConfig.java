@@ -1,8 +1,10 @@
 package com.anpetna.auth.config;
 
+import com.anpetna.adminPage.repository.AdminBlacklistJpaRepository;
 import com.anpetna.auth.service.BlacklistServiceImpl;
 import com.anpetna.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -43,9 +45,14 @@ public class SecurityConfig {
 
     @Bean   // 스프링 기본 AuthenticationManager 노출
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {return authenticationConfiguration.getAuthenticationManager();}
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
     @Bean // Bcrypt 사용
-    public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     //================================================================
 
 
@@ -55,6 +62,7 @@ public class SecurityConfig {
             JwtProvider jwtProvider,                               // JWT 파서/검증기
             BlacklistServiceImpl blacklistService,                 // Access 블랙리스트 조회 서비스
             CorsConfigurationSource corsConfigurationSource,       // CORS 설정 빈 (주입만 받음)
+            AdminBlacklistJpaRepository adminBlacklistJpaRepository, // ★추가: 계정 블랙리스트
             MemberRepository memberRepository) throws Exception {
         http
                 // ===== CORS / CSRF / 세션 전략 =====
@@ -70,8 +78,24 @@ public class SecurityConfig {
                         //브라우저에서 실제 요청 전에 보내는 프리플라이트 요청 -> 인증 없이 허용해주어야 브라우저에서 정상적으로 POST/PUT/DELETE 요청이 가능
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        // ✅ 정적 리소스 전체 허용 (classpath:/static, /public, /resources, /META-INF/resources)
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+
                         // --- Auth/JWT ---
                         .requestMatchers("/jwt/**").permitAll()
+
+                        // --- Toss Pay (API 개별 연동) ---
+                        // 결제 준비/승인 API (백엔드가 토스 서버와 통신): 프론트에서 토큰 없이 호출 가능해야 함
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/pay/toss/prepare",
+                                "/api/pay/toss/confirm").permitAll()
+                        // (선택) 클라이언트 키 핑/디버그용
+                        .requestMatchers(HttpMethod.GET, "/api/pay/toss/client-key").permitAll()
+                        // 성공/실패 리다이렉트(정적 HTML)도 누구나 접근 허용
+                        .requestMatchers(HttpMethod.GET,
+                                "/success.html",
+                                "/fail.html",
+                                "/toss-api-test.html").permitAll()
 
                         // --- Member (join/login 먼저 열기!) ---
                         .requestMatchers("/member/login", "/member/join").permitAll()
@@ -81,13 +105,23 @@ public class SecurityConfig {
 
                         // --- Board ---
                         .requestMatchers(HttpMethod.GET, "/board/readAll").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/board/readOne/").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST, "/board").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.PUT, "/board").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.DELETE, "/board").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/board/readOne/**").permitAll() // QNA 예외는 Guard 에서 처리
+                        .requestMatchers(HttpMethod.POST, "/board/create").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/board/update/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/board/delete/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/board/like/**").hasAnyRole("ADMIN", "USER")
+                        // 여기서 GET 은 전부 permitAll 로 두고, QNA 의 로그인 필요/본인 제한은 Guard 에서 검사합니다.
+                        // 이러면 리스트/상세에도 세밀한 제약(로그인 필요, 본인만 등)을 줄 수 있어요.
 
                         // --- Comment ---
                         .requestMatchers("/comment/**").hasAnyRole("ADMIN", "USER")
+
+
+                        // --- Review ---
+                        .requestMatchers(HttpMethod.POST,   "/item/*/review", "/item/*/review/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT,    "/item/*/review/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/item/*/review/**").authenticated()
+
 
                         // --- Item ---
 
@@ -96,18 +130,17 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/item", "/item/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/item", "/item/**").hasRole("ADMIN")
 
-                        // --- Review ---
-                        .requestMatchers(HttpMethod.GET,"/review", "/review/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST, "/review", "/review/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT, "/review", "/review/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/review", "/review/**").hasAnyRole("ADMIN", "USER")
 
 
                         // --- Cart ---
-                        .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/cart").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/cart").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/cart/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/cart/**").hasRole("USER")
 
                         // --- Order ---
                         .requestMatchers("/order/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
@@ -125,7 +158,7 @@ public class SecurityConfig {
                 //JWT 검증 필터를 UsernamePasswordAuthenticationFilter 앞에 넣어서, 세션 없이 요청마다 토큰 인증 수행.
                 //blacklistService 활용해 강제 차단된 토큰 처리 가능
                 .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtProvider, blacklistService,memberRepository), // 커스텀 JWT 인증 필터
+                        new JwtAuthenticationFilter(jwtProvider, blacklistService, memberRepository, adminBlacklistJpaRepository), // 커스텀 JWT 인증 필터
                         UsernamePasswordAuthenticationFilter.class                                   // 위치 지정만, 폼 로그인은 사용 안함
                 );
         return http.build();

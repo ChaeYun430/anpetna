@@ -26,13 +26,14 @@ public class ImageDTO {
 
     private Integer sortOrder;   // 정렬 순서 (옵션)
 
-    public ImageDTO(MultipartFile file) {
+    public ImageDTO(MultipartFile file, Integer sortOrder) {
         // 새 파일명 생성
         this.uuid = UUID.randomUUID();
         this.originalName = file.getOriginalFilename();
         this.ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")); //확장자
         this.fileName = uuid+ext;
         this.contentType = "image/" + ext.substring(ext.lastIndexOf(".") + 1);
+        this.sortOrder = sortOrder;
     }
 
     // Entity -> DTO 변환 생성자
