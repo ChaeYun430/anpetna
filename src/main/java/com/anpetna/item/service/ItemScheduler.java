@@ -1,9 +1,13 @@
 package com.anpetna.item.service;
 
 import com.anpetna.item.constant.ItemRankingPeriod;
+import com.anpetna.item.domain.ItemEntity;
 import com.anpetna.item.dto.ItemSalesDTO;
+import com.anpetna.item.dto.searchAllItem.SearchAllItemsRes;
 import com.anpetna.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,13 +20,9 @@ import java.util.concurrent.ScheduledFuture;
 @RequiredArgsConstructor
 public class ItemScheduler {
 
-
-    private final TaskScheduler taskScheduler;
-
-    private ScheduledFuture<?> scheduledFuture;
-
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, SearchAllItemsRes> redisTemplate;
     private final ItemRepository itemRepository;
+    private final ModelMapper modelMapper;
     //월간 주간 하루 1시간 10분
 
     //  코드 작성자의 의도
@@ -50,16 +50,13 @@ public class ItemScheduler {
     @Scheduled(cron = "0 */15 * * * *")
     public void orderBySalesQuarterHourly() {synchronizeCache(ItemRankingPeriod.HALF_HOUR);}
 
-
     private void synchronizeCache(ItemRankingPeriod period) {
         List<ItemSalesDTO> itemList = itemRepository.getSalesQuantity();
-        itemList.forEach(item -> {
-            String key = "sales:ranking:" + period + ":" + item.getItemCategory();
-            String value = "itemId : " + item.getItemId();
-            double score = item.getQuantity();
+        itemList.forEach(itemSalesDTO -> {
+            String key = "sales:ranking:" + period + ":" + itemSalesDTO.getItemCategory();
+            SearchAllItemsRes value =  modelMapper.map(itemSalesDTO.getItem(), SearchAllItemsRes.class);
+            double score = itemSalesDTO.getQuantity();
             redisTemplate.opsForZSet().add(key, value, score);
-
         });
-
     }
 }

@@ -8,8 +8,8 @@ import com.anpetna.image.dto.NewImageDTO;
 import com.anpetna.image.repository.ImageRepository;
 import com.anpetna.image.service.LocalStorage;
 import com.anpetna.item.config.ItemMapper;
-import com.anpetna.item.constant.ItemRankingPeriod;
 import com.anpetna.item.domain.ItemEntity;
+import com.anpetna.item.dto.ItemSalesDTO;
 import com.anpetna.item.dto.deleteItem.DeleteItemReq;
 import com.anpetna.item.dto.deleteItem.DeleteItemRes;
 import com.anpetna.item.dto.modifyItem.ModifyItemReq;
@@ -18,6 +18,7 @@ import com.anpetna.item.dto.registerItem.RegisterItemReq;
 import com.anpetna.item.dto.registerItem.RegisterItemRes;
 import com.anpetna.item.dto.searchAllItem.SearchAllItemsReq;
 import com.anpetna.item.dto.searchAllItem.SearchAllItemsRes;
+import com.anpetna.item.dto.searchAllItem.SearchItemsSalesRank;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemReq;
 import com.anpetna.item.dto.searchOneItem.SearchOneItemRes;
 import com.anpetna.item.repository.ItemRepository;
@@ -27,12 +28,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +43,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, SearchAllItemsRes> redisTemplate;
 
     @Override
     @Transactional
@@ -175,28 +174,31 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public PageResponseDTO<SearchAllItemsRes> getAllItems(SearchAllItemsReq req){
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+        Page<ItemEntity> searchAll = null;
         if (req.getOrderBySales() == null){
-            Page<ItemEntity> searchAll = itemRepository.orderBy(pageable, req);
+            searchAll = itemRepository.orderBy(pageable, req);
         }else{
-            List<String> searchAll1 = stringRedisTemplate.opsForZSet().reverseRange("sales:ranking:"+ ItemRankingPeriod.NONE + ":" +req.getItemCategory(), 0, -1).stream().toList();
-            searchAll1.stream().map(s -> s.substring(10)).map(s -> )
-
+            List<ItemSalesDTO> itemList = itemRepository.getSalesQuantity();
+            List<ItemEntity> itemEntityList = itemList.stream().map(ItemSalesDTO::getItem).toList();
+            searchAll = new PageImpl<>(itemEntityList, pageable, itemEntityList.size());
         }
 
-
-
-
-
-        PageResponseDTO<SearchAllItemsRes> res = PageResponseDTO.toDTO(searchAll, itemEntity -> {
+        return PageResponseDTO.toDTO(searchAll, itemEntity -> {
             SearchAllItemsRes resEach = modelMapper.map(itemEntity, SearchAllItemsRes.class);
             String entityUrl = itemEntity.getImages().get(0).getUrl();
             resEach.setThumbnailUrl(entityUrl);
             return resEach;
         }, pageable);
-
-        return res;
     }
 
+    @Override
+    public PageResponseDTO<SearchAllItemsRes> getSalesRank(SearchItemsSalesRank req){
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize());
+        String key = "sales:ranking:" + req.getPeriod() + ":" + req.getItemCategory();
+        List<SearchAllItemsRes> listRanking = redisTemplate.opsForZSet().reverseRange(key, 0, -1).stream().toList();
+        Page<SearchAllItemsRes> pageRanking= new PageImpl<>(listRanking, pageable, req.getSize());
+        return new PageResponseDTO<>(pageRanking, pageable);
+    }
 
 
     // --- 상품 등록 ---
