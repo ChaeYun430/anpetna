@@ -1,6 +1,5 @@
 package com.anpetna.order.service;
 
-import com.anpetna.member.domain.MemberEntity;
 import com.anpetna.order.constant.OrdersStatus;
 import com.anpetna.order.dto.AddressDTO;
 import com.anpetna.order.dto.createOrderDTO.CreateOrderReq;
@@ -8,7 +7,7 @@ import com.anpetna.order.dto.createOrderDTO.CreateOrderRes;
 import com.anpetna.order.dto.readAllOrderDTO.ReadAllOrdersRes;
 import com.anpetna.order.dto.readOneOrderDTO.ReadOneOrdersRes;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
+
 
 public interface OrdersService {
 

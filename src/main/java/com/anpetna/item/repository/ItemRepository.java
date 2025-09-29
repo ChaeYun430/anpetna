@@ -22,6 +22,6 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>, ItemRep
         GROUP BY o.item
             ORDER BY SUM(o.quantity) DESC
         """)
-    public List<ItemSalesDTO> getSalesQuantity();
+    public List<ItemSalesDTO> rankSalesQuantity();
 
 }
